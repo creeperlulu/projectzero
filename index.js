@@ -5,6 +5,9 @@
 @addedOn: 2024-00-00
 */
 
+// ----------INIT----------
+
+// player
 const player = "p"
 
 const playerF = bitmap`
@@ -94,7 +97,6 @@ const playerDarkF = bitmap`
 ................`
 
 //decoration
-
 const labbench1 = "☺"
 const labbench2 = "☻"
 const labbench1t = bitmap`
@@ -258,7 +260,7 @@ LL..............
 LL..............
 LL..............`
 
-
+// sounds
 const speaking = tune`
 37.5: D4-37.5 + D5-37.5 + G5-37.5 + A4-37.5,
 37.5: D4-37.5 + D5-37.5 + A5-37.5 + A4-37.5,
@@ -272,6 +274,8 @@ const intro = tune`
 15000: D4-15000,
 465000`
 
+
+// main
 const background = "b"
 const tile = bitmap`
 222222222222222L
@@ -344,8 +348,35 @@ LLL0111111110LLL
 11101LLLLLL10111
 LLL0111111110LLL`
 
+// Interaction
 var interaction = "";
 var interacting = false;
+
+// UI
+
+const yellownote = "◙"
+const yellownotet = bitmap`
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666`
+var tempX;
+var tempY;
+
+
+// ----------START---------
 
 
 //cutscene
@@ -370,7 +401,10 @@ setLegend(
   [capsuleb, capsulebt],
 
   //interactive
-  [noteonlabbench, noteonlabbencht]
+  [noteonlabbench, noteonlabbencht],
+
+  // ui
+  [yellownote, yellownotet]
 )
 setBackground(background)
 
@@ -453,6 +487,20 @@ wwwwwwwdw
 ....p....`
 ]
 
+
+const ui = [
+  map`
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........`
+]
+
+
 setMap(levels[level])
 
 
@@ -463,28 +511,28 @@ setPushables({
 
 
 onInput("s", () => {
-  if (cutscene != true) {
+  if (cutscene != true && interacting != true) {
     setLegend([player, playerF])
     getFirst(player).y += 1
   }
 })
 
 onInput("w", () => {
-  if (cutscene != true) {
+  if (cutscene != true && interacting != true) {
     setLegend([player, playerB])
     getFirst(player).y += -1
   }
 })
 
 onInput("a", () => {
-  if (cutscene != true) {
+  if (cutscene != true && interaction != true) {
     setLegend([player, playerL])
     getFirst(player).x += -1
   }
 })
 
 onInput("d", () => {
-  if (cutscene != true) {
+  if (cutscene != true && interacting != true) {
     setLegend([player, playerR])
     getFirst(player).x += 1
   }
@@ -493,17 +541,27 @@ onInput("d", () => {
 // Interaction controller
 onInput("k", () => {
   switch (interaction) {
+      
     case "note1":
+      
+      tempX = getFirst(player).x
+      tempY = getFirst(player).y
       interacting = true;
+      setMap(ui[0])
+      setBackground(yellownote)
       clearText()
-      addText("Hello I'm a note!", { x: 2, y: 14, color: color`0` })
+      addText("There is a reason", { x: 1, y: 1, color: color`0` })
+      addText("why they are all", { x: 1, y: 3, color: color`0` })
+      addText("missing.", { x: 1, y: 5, color: color`0` })
+      addText("I'm scared.", { x: 1, y: 7, color: color`0` })
+      addText("I'm going to hide", { x: 1, y: 9, color: color`0` })
+      addText("Press anything to close", { x: 1, y: 15, color: color`0` })
 
   }
 })
 
 
 afterInput(() => {
-  console.log(String(getFirst(player).x), String(getFirst(player).y))
 
   if (cutscene != true) {
     playTune(footstep)
@@ -523,7 +581,12 @@ afterInput(() => {
     }
   } else {
     interacting = false;
+    setMap(levels[level])
+    player.x = tempX
+    player.y = tempY
+    
   }
+
 
   if (winningSon.length >= 1) {
     level = level + 1;
@@ -548,9 +611,12 @@ afterInput(() => {
         [plant, plantt],
         [plant2, plant2t],
         [capsuleb, capsulebt],
-
+      
         //interactive
-        [noteonlabbench, noteonlabbencht]
+        [noteonlabbench, noteonlabbencht],
+
+        // ui
+        [yellownote, yellownotet]
       )
       setMap(levels[level]);
       clearText();
