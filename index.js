@@ -296,6 +296,7 @@ LLLL00006660LLLL
 111111111111L111
 111111111111L111
 LLLLLLLLLLLLLLLL`
+const blacktile = "♪"
 
 // sounds
 const speaking = tune`
@@ -398,6 +399,7 @@ const plantgoalt = bitmap`
 ......LLLL......
 ................`
 
+
 // Interaction
 var interaction = "";
 var interacting = false;
@@ -440,6 +442,8 @@ const yellow = bitmap`
 6666666666666666`
 var tempX;
 var tempY;
+var tempPlantX;
+var tempPlantY;
 var currentBG;
 var currentPlayer;
 var hasKey = false;
@@ -472,13 +476,15 @@ function scene(backgroundtexture, playertexture) {
     [capsuleb, capsulebt],
     [deadbot, deadbott],
     [pushplant, plant2t],
+    [blacktile, black],
 
     //interactive
     [noteonlabbench, noteonlabbencht],
     [noteonwall, noteonwallt],
 
     // ui
-    [background, backgroundtexture]
+    [background, backgroundtexture],
+
   )
   setBackground(background)
   currentBG = backgroundtexture
@@ -535,7 +541,8 @@ setSolids(
     capsuleb,
     noteonlabbench,
     deadbot,
-    pushplant
+    pushplant,
+    noteonwall
 
 
 
@@ -586,7 +593,33 @@ wwwwwlwwwww
 ..◙........
 ...◙...◙...
 ..◙.....◙..
-♥....p....♥`
+♥....p....♥`,
+  map`
+◘..wwdww..◘
+•.◘w...w◘.•
+..•w...w•..
+...w...w...
+wwww...w♀ww
+♥◙........♂
+...........
+.........◙.
+.....p.....`,
+  map`
+wwwwwwwwwwwwwwwwwwwww
+..........◙..........
+.....................
+.....................
+........♪♪♪♪♪........
+.......♪.♪...♪.......
+.......♪♪..♪♪♪.......
+.......♪..♪..♪.......
+.......♪.♪...♪.......
+.......♪.♪...♪.......
+........♪♪♪♪♪........
+.....................
+.....................
+.....................
+..........p..........`
 ]
 
 
@@ -699,6 +732,8 @@ onInput("k", () => {
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
+        tempPlantX = getFirst(pushplant).x;
+        tempPlantY = getFirst(pushplant).y;
         interacting = true;
         setMap(ui[0]);
         scene(yellow, currentPlayer);
@@ -709,6 +744,51 @@ onInput("k", () => {
         addText("J Button?", { x: 0, y: 4, color: color`7` });
         addText("Press K to close", { x: 2, y: 14, color: color`0` });
         break;
+
+      case "note4":
+
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        interacting = true;
+        setMap(ui[0]);
+        scene(black, currentPlayer);
+        clearText();
+        addText("Project 1565 - Logs", { x: 0, y: 1, color: color`2` });
+        addText("No errors.", { x: 0, y: 2, color: color`2` });
+        addText("Last messages:", { x: 0, y: 3, color: color`2` });
+        addText("They killed me.", { x: 0, y: 4, color: color`2` });
+        addText("All my components", { x: 0, y: 5, color: color`2` });
+        addText("are dead, except", { x: 0, y: 6, color: color`2` });
+        addText("my battery and", { x: 0, y: 7, color: color`2` });
+        addText("motherboard,", { x: 0, y: 8, color: color`2` });
+        addText("hence I can still", { x: 0, y: 9, color: color`2` });
+        addText("communicate. Find", { x: 0, y: 10, color: color`2` });
+        addText("them. Venge me.", { x: 0, y: 11, color: color`2` });
+        addText("Press K to close", { x: 2, y: 14, color: color`2` });
+        break;
+
+      case "note5":
+
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        interacting = true;
+        setMap(ui[0]);
+        scene(black, currentPlayer);
+        clearText();
+        addText("Project 1566 - Logs", { x: 0, y: 1, color: color`2` });
+        addText("I tried to", { x: 0, y: 2, color: color`2` });
+        addText("escape. Without", { x: 0, y: 3, color: color`2` });
+        addText("success. I might", { x: 0, y: 4, color: color`2` });
+        addText("not have real", { x: 0, y: 5, color: color`2` });
+        addText("feelings but I'm", { x: 0, y: 6, color: color`2` });
+        addText("still sad. If only I", { x: 0, y: 7, color: color`2` });
+        addText("televersed myself", { x: 0, y: 8, color: color`2` });
+        addText("more quickly...", { x: 0, y: 9, color: color`2` });
+        addText("Goodbye, my friends.", { x: 0, y: 10, color: color`2` });
+        addText("Find the ones", { x: 0, y: 11, color: color`2` });
+        addText("behind all of this.", { x: 0, y: 11, color: color`2` });
+        addText("Press K to close", { x: 2, y: 14, color: color`2` });
+        break;
     }
   } else {
     clearText()
@@ -717,6 +797,8 @@ onInput("k", () => {
     interacting = false;
     getFirst(player).x = tempX
     getFirst(player).y = tempY
+    getFirst(pushplant).x = tempPlantX
+    getFirst(pushplant).y = tempPlantY
   }
 })
 
@@ -784,6 +866,19 @@ afterInput(() => {
       } else if (getFirst(player).x == 4 && getFirst(player).y == 1) {
         addText("Press K to read.", { x: 2, y: 14, color: color`0` })
         interaction = "note3"
+      } else {
+        clearText()
+        interaction = ""
+      }
+    }
+
+    if (level == 5) {
+      if (getFirst(player).x == 1 && getFirst(player).y == 6) {
+        addText("Press K to read logs", { x: 0, y: 14, color: color`0` })
+        interaction = "note4"
+      } else if (getFirst(player).x == 9 && getFirst(player).y == 8) {
+        addText("Press K to read logs", { x: 0, y: 14, color: color`0` })
+        interaction = "note5"
       } else {
         clearText()
         interaction = ""
