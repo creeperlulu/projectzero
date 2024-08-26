@@ -95,8 +95,8 @@ const playerDarkF = bitmap`
 
 //decoration
 
-const labbench1 = "1"
-const labbench2 = "2"
+const labbench1 = "☺"
+const labbench2 = "☻"
 const labbench1t = bitmap`
 1111111111111111
 1222222222222222
@@ -131,7 +131,43 @@ const labbench2t = bitmap`
 ..............LL
 ..............LL
 ..............LL`
-const plant = "3"
+const labbench3 = "♦"
+const labbench4 = "♣"
+const labbench3t = bitmap`
+1111111111111111
+1222222222222222
+1222222222222222
+1272722727227272
+127C7CC7C7CC7C72
+12CCCCCCCCCCCCC2
+1279722747227672
+1279722747227672
+12C7CCCC7CCCC7C2
+12CCCCCCCCCCCCC2
+1222222222222222
+1111111111111111
+1111111111111111
+LL..............
+LL..............
+LL..............`
+const labbench4t = bitmap`
+1111111111111111
+2222222222LLLLL1
+2111111111LLLLL1
+2122222222222LL1
+2122222222222LL1
+21222222LL222LL1
+2122222L0LL22121
+2122222LL0L22121
+21222222LL222121
+2111111111111121
+2222222222222221
+1111111111111111
+1111111111111111
+..............LL
+..............LL
+..............LL`
+const plant = "♥"
 const plantt = bitmap`
 .....4..........
 .....44...4.....
@@ -149,6 +185,61 @@ DDDDDD4444DDDDD.
 .....CCCCCC.....
 ......CCCC......
 ................`
+const plant2 = "♠"
+const plant2t = bitmap`
+................
+..D...4.........
+..DD..44..444...
+..DDD.444444....
+...DDD44444.....
+....DDD44DDD....
+....DDD4DDDDDD..
+.....DDDDDD.DDD.
+....C0DDDD0C.DD.
+....CC0000CC....
+....CCCCCCCC....
+....CCCCCCCC....
+.....CCCCCC.....
+.....CCCCCC.....
+......CCCC......
+................`
+const capsuleb = "•"
+const capsulebt = bitmap`
+.52277700011175.
+.52777700111075.
+.57777001110075.
+.57770011100775.
+.57770111007775.
+.57771110077775.
+.57721100077775.
+.57221000077775.
+.52227000077775.
+1522770000077751
+1527777000077751
+L55777770007755L
+7LL5555555555LL7
+L77LLLLLLLLLL77L
+.LL7777777777LL.
+...LLLLLLLLLL...`
+const capsulet = "◘"
+const capsulett = bitmap`
+....LLLLLLLL....
+..LL11111111LL..
+.L1111LLLL1111L.
+L1111LLLLLL1111L
+L1111LLLLLL1111L
+LL1111LLLL1111LL
+L7LL11111111LL7L
+.L77LLLLLLLL77L.
+.5LL77777777LL5.
+.577LLLLLLLL775.
+.57777222277775.
+.57771111077775.
+.57711110007775.
+.57211100000725.
+.52221000000225.
+.52227000001225.`
+
 
 const speaking = tune`
 37.5: D4-37.5 + D5-37.5 + G5-37.5 + A4-37.5,
@@ -157,7 +248,7 @@ const speaking = tune`
 37.5: C4-37.5 + C5-37.5 + F5-37.5 + A4-37.5,
 1050`
 const footstep = tune`
-60: E4/60,
+60: C4~60,
 1860`
 const intro = tune`
 15000: D4-15000,
@@ -205,6 +296,9 @@ const door = "d"
 //cutscene
 var cutscene = true
 setLegend(
+  //decoration
+  [ capsulet, capsulett],
+  
   [ player, playerDarkF],
   [ wall, bitmap`
 1111111L11111111
@@ -245,7 +339,11 @@ LLL0111111110LLL`],
 //decoration
   [ labbench1, labbench1t],
   [ labbench2, labbench2t],
-  [ plant, plantt]
+  [ labbench3, labbench3t],
+  [ labbench4, labbench4t],
+  [ plant, plantt],
+  [ plant2, plant2t],
+  [ capsuleb, capsulebt]
 )
 setBackground(background)
 
@@ -284,7 +382,20 @@ setTimeout(function(){
 }, 1000);
 
   
-setSolids([player,wall, labbench1, labbench2])
+setSolids(
+  [player,
+   wall,
+   labbench1,
+   labbench2,
+   labbench3,
+   labbench4,
+   plant,
+   plant2,
+   capsuleb
+   
+  
+
+])
 
 let level = 0
 const levels = [
@@ -298,20 +409,20 @@ const levels = [
 .........`,
   map`
 wwwwdwwww
-3.......3
-.12...12.
+♥.......♠
+.♦☻...☺♣.
 ....p....
-.12...12.
+.☺☻...♦♣.
 .........
-.12...12.`,
+.☺♣...♦☻.`,
   map`
-wwwwdwwww
+wwwwwwwdw
+.◘.◘.....
+.•.•.....
 .........
-.........
-....p....
-.........
-.........
-.........`
+.◘.......
+.•.......
+....p....`
 ]
 
 setMap(levels[level])
@@ -358,6 +469,56 @@ afterInput(() => {
     console.log(String(level))
 
   if (level < levels.length) {
+    setLegend(
+  //decoration
+  [ capsulet, capsulett],
+  
+  [ player, playerB],
+  [ wall, bitmap`
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+LLLLLLLLLLLLLLLL
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+LLLLLLLLLLLLLLLL`],
+  [ door, bitmap`
+1110111111110111
+111011LLLL110111
+1110111111110111
+111011LLLL110111
+1110111111110111
+111011LLLL110111
+1110111111110111
+LLL0111111110LLL
+111011111LL10111
+1110111111L10111
+1110111111110111
+1110111111110111
+1110111111110111
+1110111111110111
+11101LLLLLL10111
+LLL0111111110LLL`],
+  [ background, tile],
+
+//decoration
+  [ labbench1, labbench1t],
+  [ labbench2, labbench2t],
+  [ labbench3, labbench3t],
+  [ labbench4, labbench4t],
+  [ plant, plantt],
+  [ plant2, plant2t],
+  [ capsuleb, capsulebt]
+)
     setMap(levels[level]);
     clearText();
   } else {
