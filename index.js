@@ -205,6 +205,7 @@ const plant2t = bitmap`
 .....CCCCCC.....
 ......CCCC......
 ................`
+const pushplant = "♂"
 const capsuleb = "•"
 const capsulebt = bitmap`
 .52277700011175.
@@ -277,6 +278,24 @@ const deadbott = bitmap`
 ...1.1LL1LL1.121
 ...LLLLLL1L1L.LL
 ...LL......LL...`
+const noteonwall = "♀"
+const noteonwallt = bitmap`
+1111111L11111111
+1111111L11111111
+1111111L11111111
+LLLLLLLLLLLLLLLL
+111L100001111111
+111L106660000111
+111L106666660111
+LLLLL06006660LLL
+1111066660060111
+1111060066601111
+1111066660601111
+LLLL00006660LLLL
+111111110000L111
+111111111111L111
+111111111111L111
+LLLLLLLLLLLLLLLL`
 
 // sounds
 const speaking = tune`
@@ -323,23 +342,6 @@ const tile = bitmap`
 2222222222222220
 222222222222222L
 00LLLLLLL0LL000L`
-const black = bitmap`
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000
-0000000000000000`
 const wall = "w"
 const wallt = bitmap`
 1111111L11111111
@@ -377,6 +379,24 @@ LLL0111111110LLL
 1110111111110111
 11101LLLLLL10111
 LLL0111111110LLL`
+const plantgoal = "g"
+const plantgoalt = bitmap`
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+......LLLL......
+.....LLLLLL.....
+......LLLL......
+................`
 
 // Interaction
 var interaction = "";
@@ -384,7 +404,24 @@ var interacting = false;
 
 // UI
 
-const yellownotet = bitmap`
+const black = bitmap`
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000`
+const yellow = bitmap`
 6666666666666666
 6666666666666666
 6666666666666666
@@ -422,6 +459,7 @@ function scene(backgroundtexture, playertexture) {
     [wall, wallt],
     [door, doort],
     [lockeddoor, doort],
+    [plantgoal, plantgoalt],
 
 
     //decoration
@@ -433,9 +471,11 @@ function scene(backgroundtexture, playertexture) {
     [plant2, plant2t],
     [capsuleb, capsulebt],
     [deadbot, deadbott],
+    [pushplant, plant2t],
 
     //interactive
     [noteonlabbench, noteonlabbencht],
+    [noteonwall, noteonwallt],
 
     // ui
     [background, backgroundtexture]
@@ -494,7 +534,8 @@ setSolids(
     plant2,
     capsuleb,
     noteonlabbench,
-    deadbot
+    deadbot,
+    pushplant
 
 
 
@@ -527,13 +568,25 @@ wwwwwwwlw
 .•.......
 ....p....`,
   map`
-wlwwwwwww
-.....wwww
-.....wwww
-.....wwww
-.......◙.
-.........
-....p....`
+wwlw♀ww....
+♥....gw....
+......w....
+wwww..w....
+...w..wwwww
+...w....◙.♥
+...w.......
+...w..♂....
+...w.....p.`,
+  map`
+wwwwwlwwwww
+♠.........♠
+.◙.......◙.
+..◙.....◙..
+.◙.......◙.
+..◙........
+...◙...◙...
+..◙.....◙..
+♥....p....♥`
 ]
 
 
@@ -555,7 +608,7 @@ setMap(levels[level])
 
 
 setPushables({
-  [player]: []
+  [player]: [pushplant]
 })
 
 
@@ -599,7 +652,7 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         setMap(ui[0]);
-        scene(yellownotet, currentPlayer);
+        scene(yellow, currentPlayer);
         clearText();
         addText("There is a reason", { x: 0, y: 1, color: color`0` });
         addText("why they are all", { x: 0, y: 2, color: color`0` });
@@ -633,14 +686,28 @@ onInput("k", () => {
         addText("Cannot access", { x: 0, y: 3, color: color`6` });
         addText("modules. Make sure", { x: 0, y: 4, color: color`6` });
         addText("all components are", { x: 0, y: 5, color: color`6` });
-        addText("properly", { x: 0, y: 6, color: color`6` });
-        addText("connected.", { x: 0, y: 7, color: color`6` });
-        addText("CRITICAL ERROR X", { x: 0, y: 8, color: color`3` });
-        addText("SYSTEM HAS BEEN", { x: 0, y: 9, color: color`3` });
-        addText("PHYSICALLY DAMAGED", { x: 0, y: 10, color: color`3` });
-        addText("BOOT IMPOSSIBLE", { x: 0, y: 11, color: color`3` });
-        addText('"bye cruel world"', { x: 0, y: 12, color: color`3` });
+        addText("properly connected.", { x: 0, y: 6, color: color`6` });
+        addText("CRITICAL ERROR X", { x: 0, y: 7, color: color`3` });
+        addText("SYSTEM HAS BEEN", { x: 0, y: 8, color: color`3` });
+        addText("PHYSICALLY DAMAGED", { x: 0, y: 9, color: color`3` });
+        addText("BOOT IMPOSSIBLE", { x: 0, y: 10, color: color`3` });
+        addText('"bye cruel world"', { x: 0, y: 11, color: color`2` });
         addText("Press K to close", { x: 2, y: 14, color: color`2` });
+        break;
+
+      case "note3":
+
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        interacting = true;
+        setMap(ui[0]);
+        scene(yellow, currentPlayer);
+        clearText();
+        addText("Argh! I'm stuck", { x: 0, y: 1, color: color`0` });
+        addText("again... Where", { x: 0, y: 2, color: color`0` });
+        addText("did I put my", { x: 0, y: 3, color: color`0` });
+        addText("J Button?", { x: 0, y: 4, color: color`7` });
+        addText("Press K to close", { x: 2, y: 14, color: color`0` });
         break;
     }
   } else {
@@ -662,14 +729,36 @@ onInput("j", () => {
 
 
 afterInput(() => {
-
+  console.log(String(hasKey))
   if (cutscene != true) {
     playTune(footstep)
   }
-  
+
   var winningSon = tilesWith(player, door);
+  if (level == 3) {
+    var plantOnGoal = tilesWith(pushplant, plantgoal);
+
+    if (plantOnGoal.length >= 1 && hasKey == false) {
+      playTune(getItem)
+      hasKey = true
+    }
+  }
+  if (level == 4) {
+
+
+    if (getFirst(player).x == 8 && getFirst(player).y == 5 && hasKey == false) {
+      setTimeout(function () {
+        if (getFirst(player).x == 8 && getFirst(player).y == 5 && hasKey == false) {
+          playTune(getItem)
+          hasKey = true
+        }
+      }, 2000);
+
+    }
+
+  }
   playerOnLockedDoor = tilesWith(player, lockeddoor);
-  
+
 
   if (interacting != true) {
     // Level 2 interactions
@@ -689,9 +778,12 @@ afterInput(() => {
 
     // Level 3 interactions
     if (level == 3) {
-      if (getFirst(player).x == 7 && getFirst(player).y == 5) {
+      if (getFirst(player).x == 8 && getFirst(player).y == 6) {
         addText("Press K to read logs", { x: 0, y: 14, color: color`0` })
         interaction = "note2"
+      } else if (getFirst(player).x == 4 && getFirst(player).y == 1) {
+        addText("Press K to read.", { x: 2, y: 14, color: color`0` })
+        interaction = "note3"
       } else {
         clearText()
         interaction = ""
@@ -699,7 +791,7 @@ afterInput(() => {
     }
 
 
-    
+
   }
 
   if (winningSon.length >= 1) {
@@ -720,20 +812,20 @@ afterInput(() => {
   if (playerOnLockedDoor.length >= 1) {
 
     if (hasKey == true) {
-    hasKey = false;
-    level = level + 1;
-    console.log(String(level))
+      hasKey = false;
+      level = level + 1;
+      console.log(String(level))
 
-    if (level < levels.length) {
-      scene(currentBG, playerB)
-      setMap(levels[level]);
-      clearText();
+      if (level < levels.length) {
+        scene(currentBG, playerB)
+        setMap(levels[level]);
+        clearText();
+      } else {
+        addText("Congratulations.", { x: 2, y: 7, color: color`0` })
+        addText("You are now", { x: 4, y: 8, color: color`0` })
+        addText("a free robot.", { x: 3, y: 9, color: color`0` })
+      }
     } else {
-      addText("Congratulations.", { x: 2, y: 7, color: color`0` })
-      addText("You are now", { x: 4, y: 8, color: color`0` })
-      addText("a free robot.", { x: 3, y: 9, color: color`0` })
-    }
-  } else {
       playTune(error)
       addText("Door is locked.", { x: 2, y: 14, color: color`0` })
       getFirst(player).y += 1
