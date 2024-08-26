@@ -330,6 +330,7 @@ LLLLLLLLLLLLLLLL
 111111111111L111
 LLLLLLLLLLLLLLLL`
 const door = "d"
+const lockeddoor = "l"
 const doort = bitmap`
 1110111111110111
 111011LLLL110111
@@ -354,7 +355,6 @@ var interacting = false;
 
 // UI
 
-const yellownote = "◙"
 const yellownotet = bitmap`
 6666666666666666
 6666666666666666
@@ -374,39 +374,52 @@ const yellownotet = bitmap`
 6666666666666666`
 var tempX;
 var tempY;
+var currentBG;
+var currentPlayer;
+var hasKey = false;
 
 
 // ----------START---------
 
 
+//CHANGE THIS FOR LEGEND
+function scene(backgroundtexture, playertexture) {
+  setLegend(
+    //decoration foreground
+    [capsulet, capsulett],
+
+    //main
+    [player, playertexture],
+    [wall, wallt],
+    [door, doort],
+    [lockeddoor, doort],
+
+
+    //decoration
+    [labbench1, labbench1t],
+    [labbench2, labbench2t],
+    [labbench3, labbench3t],
+    [labbench4, labbench4t],
+    [plant, plantt],
+    [plant2, plant2t],
+    [capsuleb, capsulebt],
+
+    //interactive
+    [noteonlabbench, noteonlabbencht],
+
+    // ui
+    [background, backgroundtexture]
+  )
+  setBackground(background)
+  currentBG = backgroundtexture
+  currentPlayer = playertexture
+}
+
+
+
 //cutscene
 var cutscene = true
-setLegend(
-  //decoration foreground
-  [capsulet, capsulett],
-
-  //main
-  [player, playerDarkF],
-  [wall, wallt],
-  [door, doort],
-  [background, black],
-
-  //decoration
-  [labbench1, labbench1t],
-  [labbench2, labbench2t],
-  [labbench3, labbench3t],
-  [labbench4, labbench4t],
-  [plant, plantt],
-  [plant2, plant2t],
-  [capsuleb, capsulebt],
-
-  //interactive
-  [noteonlabbench, noteonlabbencht],
-
-  // ui
-  [yellownote, yellownotet]
-)
-setBackground(background)
+scene(black, playerDarkF)
 
 setTimeout(function () {
   playTune(speaking)
@@ -424,10 +437,7 @@ setTimeout(function () {
         level = 1
         setMap(levels[level])
         playTune(intro)
-        setLegend(
-          [player, playerF],
-          [background, tile]
-        )
+        scene(tile, playerF)
         addText("PR0JECT ZER0", { x: 4, y: 3, color: color`0` })
         addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
 
@@ -478,7 +488,7 @@ wwwwdwwww
 .........
 .☺♣...♦☻.`,
   map`
-wwwwwwwdw
+wwwwwwwlw
 .◘.◘.....
 .•.•..♦♣.
 .........
@@ -512,51 +522,69 @@ setPushables({
 
 onInput("s", () => {
   if (cutscene != true && interacting != true) {
-    setLegend([player, playerF])
+    scene(currentBG, playerF)
     getFirst(player).y += 1
   }
 })
 
 onInput("w", () => {
   if (cutscene != true && interacting != true) {
-    setLegend([player, playerB])
+    scene(currentBG, playerB)
     getFirst(player).y += -1
   }
 })
 
 onInput("a", () => {
   if (cutscene != true && interaction != true) {
-    setLegend([player, playerL])
+    scene(currentBG, playerL)
     getFirst(player).x += -1
   }
 })
 
 onInput("d", () => {
   if (cutscene != true && interacting != true) {
-    setLegend([player, playerR])
+    scene(currentBG, playerR)
     getFirst(player).x += 1
   }
 })
 
 // Interaction controller
 onInput("k", () => {
-  switch (interaction) {
-      
-    case "note1":
-      
-      tempX = getFirst(player).x
-      tempY = getFirst(player).y
-      interacting = true;
-      setMap(ui[0])
-      setBackground(yellownote)
-      clearText()
-      addText("There is a reason", { x: 1, y: 1, color: color`0` })
-      addText("why they are all", { x: 1, y: 3, color: color`0` })
-      addText("missing.", { x: 1, y: 5, color: color`0` })
-      addText("I'm scared.", { x: 1, y: 7, color: color`0` })
-      addText("I'm going to hide", { x: 1, y: 9, color: color`0` })
-      addText("Press anything to close", { x: 1, y: 15, color: color`0` })
+  if (interacting != true) {
 
+    switch (interaction) {
+
+      case "note1":
+
+        tempX = getFirst(player).x
+        tempY = getFirst(player).y
+        interacting = true;
+        setMap(ui[0])
+        scene(yellownotet, currentPlayer)
+        clearText()
+        addText("There is a reason", { x: 0, y: 1, color: color`0` })
+        addText("why they are all", { x: 0, y: 2, color: color`0` })
+        addText("missing. I'm scared.", { x: 0, y: 3, color: color`0` })
+        addText("I'm going to hide.", { x: 0, y: 4, color: color`0` })
+        addText("I need to close", { x: 0, y: 5, color: color`0` })
+        addText("the door.", { x: 0, y: 6, color: color`0` })
+        addText("IF I DON'T MAKE IT", { x: 0, y: 7, color: color`3` })
+        addText("THE KEY IS BEHIND", { x: 0, y: 8, color: color`3` })
+        addText("A CAPSULE!!!", { x: 0, y: 9, color: color`3` })
+        addText("Press K to close", { x: 2, y: 14, color: color`0` })
+
+
+      case "key1":
+        hasKey = true;
+        clearText()
+    }
+  } else {
+    clearText()
+    scene(tile, playerF)
+    setMap(levels[level])
+    interacting = false;
+    getFirst(player).x = tempX
+    getFirst(player).y = tempY
   }
 })
 
@@ -566,58 +594,34 @@ afterInput(() => {
   if (cutscene != true) {
     playTune(footstep)
   }
-
-  const winningSon = tilesWith(player, door);
+  
+  var winningSon = tilesWith(player, door);
+  if (hasKey == true){
+  winningSon = tilesWith(player, lockeddoor);
+  }
+  
 
   if (interacting != true) {
     if (level == 2) {
       if (getFirst(player).x == 6 && getFirst(player).y == 3) {
         addText("Press K to read.", { x: 2, y: 14, color: color`0` })
         interaction = "note1";
+      } else if (getFirst(player).x == 1 && getFirst(player).y == 1 && hasKey == false) {
+        addText("Press K to grab.", { x: 2, y: 14, color: color`0` })
+        interaction = "key1";
       } else {
         clearText()
-        interaction = "";
+        interaction = ""
       }
     }
-  } else {
-    interacting = false;
-    setMap(levels[level])
-    player.x = tempX
-    player.y = tempY
-    
   }
-
 
   if (winningSon.length >= 1) {
     level = level + 1;
     console.log(String(level))
 
     if (level < levels.length) {
-      setLegend(
-        //decoration foreground
-        [capsulet, capsulett],
-
-        //main
-        [player, playerB],
-        [wall, wallt],
-        [door, doort],
-        [background, tile],
-
-        //decoration
-        [labbench1, labbench1t],
-        [labbench2, labbench2t],
-        [labbench3, labbench3t],
-        [labbench4, labbench4t],
-        [plant, plantt],
-        [plant2, plant2t],
-        [capsuleb, capsulebt],
-      
-        //interactive
-        [noteonlabbench, noteonlabbencht],
-
-        // ui
-        [yellownote, yellownotet]
-      )
+      scene(currentBG, playerB)
       setMap(levels[level]);
       clearText();
     } else {
