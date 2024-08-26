@@ -259,6 +259,24 @@ const noteonlabbencht = bitmap`
 LL..............
 LL..............
 LL..............`
+const deadbot = "◙"
+const deadbott = bitmap`
+....1LL1........
+...LLLLL1LL1....
+...LLLL1LLLL1...
+.3.1000011LL00..
+..31000000001.0.
+..7100000000L...
+..710L000000L...
+.7.1000000L0L...
+....1LLL00006...
+...LLLLL1LL.6...
+...LL1LL00L.....
+..LL1L11111.LL..
+..L2LLLL11L21L1.
+...1.1LL1LL1.121
+...LLLLLL1L1L.LL
+...LL......LL...`
 
 // sounds
 const speaking = tune`
@@ -268,11 +286,22 @@ const speaking = tune`
 37.5: C4-37.5 + C5-37.5 + F5-37.5 + A4-37.5,
 1050`
 const footstep = tune`
-60: C4~60,
+60: C4~60 + C5~60,
 1860`
 const intro = tune`
 15000: D4-15000,
 465000`
+const getItem = tune`
+150: D4~150 + D5/150,
+150: A4~150 + A5/150,
+150: B5/150 + B4~150,
+150: A5/150 + A4~150,
+150: D5-150,
+4050`
+const error = tune`
+120: D4-120 + D5/120 + B5^120,
+120: D4-120 + D5/120 + B5^120,
+3600`
 
 
 // main
@@ -403,6 +432,7 @@ function scene(backgroundtexture, playertexture) {
     [plant, plantt],
     [plant2, plant2t],
     [capsuleb, capsulebt],
+    [deadbot, deadbott],
 
     //interactive
     [noteonlabbench, noteonlabbencht],
@@ -463,7 +493,8 @@ setSolids(
     plant,
     plant2,
     capsuleb,
-    noteonlabbench
+    noteonlabbench,
+    deadbot
 
 
 
@@ -494,6 +525,14 @@ wwwwwwwlw
 .........
 .◘....○☻.
 .•.......
+....p....`,
+  map`
+wlwwwwwww
+.....wwww
+.....wwww
+.....wwww
+.......◙.
+.........
 ....p....`
 ]
 
@@ -556,27 +595,53 @@ onInput("k", () => {
 
       case "note1":
 
-        tempX = getFirst(player).x
-        tempY = getFirst(player).y
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
         interacting = true;
-        setMap(ui[0])
-        scene(yellownotet, currentPlayer)
-        clearText()
-        addText("There is a reason", { x: 0, y: 1, color: color`0` })
-        addText("why they are all", { x: 0, y: 2, color: color`0` })
-        addText("missing. I'm scared.", { x: 0, y: 3, color: color`0` })
-        addText("I'm going to hide.", { x: 0, y: 4, color: color`0` })
-        addText("I need to close", { x: 0, y: 5, color: color`0` })
-        addText("the door.", { x: 0, y: 6, color: color`0` })
-        addText("IF I DON'T MAKE IT", { x: 0, y: 7, color: color`3` })
-        addText("THE KEY IS BEHIND", { x: 0, y: 8, color: color`3` })
-        addText("A CAPSULE!!!", { x: 0, y: 9, color: color`3` })
-        addText("Press K to close", { x: 2, y: 14, color: color`0` })
+        setMap(ui[0]);
+        scene(yellownotet, currentPlayer);
+        clearText();
+        addText("There is a reason", { x: 0, y: 1, color: color`0` });
+        addText("why they are all", { x: 0, y: 2, color: color`0` });
+        addText("missing. I'm scared.", { x: 0, y: 3, color: color`0` });
+        addText("I'm going to hide.", { x: 0, y: 4, color: color`0` });
+        addText("I need to close", { x: 0, y: 5, color: color`0` });
+        addText("the door.", { x: 0, y: 6, color: color`0` });
+        addText("IF I DON'T MAKE IT", { x: 0, y: 7, color: color`3` });
+        addText("THE KEY IS BEHIND", { x: 0, y: 8, color: color`3` });
+        addText("A CAPSULE!!!", { x: 0, y: 9, color: color`3` });
+        addText("Press K to close", { x: 2, y: 14, color: color`0` });
+        break;
 
 
       case "key1":
         hasKey = true;
-        clearText()
+        playTune(getItem)
+        clearText();
+        break;
+
+      case "note2":
+
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        interacting = true;
+        setMap(ui[0]);
+        scene(black, currentPlayer);
+        clearText();
+        addText("Project 9515 - Logs", { x: 0, y: 1, color: color`2` });
+        addText("WARNING !", { x: 0, y: 2, color: color`6` });
+        addText("Cannot access", { x: 0, y: 3, color: color`6` });
+        addText("modules. Make sure", { x: 0, y: 4, color: color`6` });
+        addText("all components are", { x: 0, y: 5, color: color`6` });
+        addText("properly", { x: 0, y: 6, color: color`6` });
+        addText("connected.", { x: 0, y: 7, color: color`6` });
+        addText("CRITICAL ERROR X", { x: 0, y: 8, color: color`3` });
+        addText("SYSTEM HAS BEEN", { x: 0, y: 9, color: color`3` });
+        addText("PHYSICALLY DAMAGED", { x: 0, y: 10, color: color`3` });
+        addText("BOOT IMPOSSIBLE", { x: 0, y: 11, color: color`3` });
+        addText('"bye cruel world"', { x: 0, y: 12, color: color`3` });
+        addText("Press K to close", { x: 2, y: 14, color: color`2` });
+        break;
     }
   } else {
     clearText()
@@ -588,6 +653,13 @@ onInput("k", () => {
   }
 })
 
+onInput("j", () => {
+  if (cutscene != true && interacting != true) {
+    setMap(levels[level]);
+  }
+})
+
+
 
 afterInput(() => {
 
@@ -596,12 +668,11 @@ afterInput(() => {
   }
   
   var winningSon = tilesWith(player, door);
-  if (hasKey == true){
-  winningSon = tilesWith(player, lockeddoor);
-  }
+  playerOnLockedDoor = tilesWith(player, lockeddoor);
   
 
   if (interacting != true) {
+    // Level 2 interactions
     if (level == 2) {
       if (getFirst(player).x == 6 && getFirst(player).y == 3) {
         addText("Press K to read.", { x: 2, y: 14, color: color`0` })
@@ -614,6 +685,21 @@ afterInput(() => {
         interaction = ""
       }
     }
+
+
+    // Level 3 interactions
+    if (level == 3) {
+      if (getFirst(player).x == 7 && getFirst(player).y == 5) {
+        addText("Press K to read logs", { x: 0, y: 14, color: color`0` })
+        interaction = "note2"
+      } else {
+        clearText()
+        interaction = ""
+      }
+    }
+
+
+    
   }
 
   if (winningSon.length >= 1) {
@@ -628,6 +714,29 @@ afterInput(() => {
       addText("Congratulations.", { x: 2, y: 7, color: color`0` })
       addText("You are now", { x: 4, y: 8, color: color`0` })
       addText("a free robot.", { x: 3, y: 9, color: color`0` })
+    }
+  }
+
+  if (playerOnLockedDoor.length >= 1) {
+
+    if (hasKey == true) {
+    hasKey = false;
+    level = level + 1;
+    console.log(String(level))
+
+    if (level < levels.length) {
+      scene(currentBG, playerB)
+      setMap(levels[level]);
+      clearText();
+    } else {
+      addText("Congratulations.", { x: 2, y: 7, color: color`0` })
+      addText("You are now", { x: 4, y: 8, color: color`0` })
+      addText("a free robot.", { x: 3, y: 9, color: color`0` })
+    }
+  } else {
+      playTune(error)
+      addText("Door is locked.", { x: 2, y: 14, color: color`0` })
+      getFirst(player).y += 1
     }
   }
 })
