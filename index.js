@@ -7,7 +7,7 @@
 
 const player = "p"
 
-const playerF =  bitmap`
+const playerF = bitmap`
 ....LLLLLLLL.3..
 ...LLLL1111LL0..
 ...L111111LL0...
@@ -24,7 +24,7 @@ const playerF =  bitmap`
 ....L11L1LLL....
 .....L111L1.....
 .....LL..11.....`
-const playerB =  bitmap`
+const playerB = bitmap`
 ..C.LLLLLLLL....
 ..0LL1111LLLL...
 ...LLL111111L...
@@ -41,7 +41,7 @@ const playerB =  bitmap`
 ....LL00001L....
 .....1L111L.....
 .....11..LL.....`
-const playerR =  bitmap`
+const playerR = bitmap`
 ......LLLL......
 .....LL1111.....
 .....11111L.....
@@ -58,7 +58,7 @@ const playerR =  bitmap`
 ......1L1L......
 .......1L.......
 .......1L.......`
-const playerL =  bitmap`
+const playerL = bitmap`
 ......LLLL......
 .....11LLLL.....
 .....L11111.....
@@ -239,6 +239,24 @@ L7LL11111111LL7L
 .57211100000725.
 .52221000000225.
 .52227000001225.`
+const noteonlabbench = "○"
+const noteonlabbencht = bitmap`
+1111111111111111
+1222200000002222
+1222206666660222
+1222206000060222
+1222206666660222
+1222206060060222
+1222206666660222
+1222206006060222
+1222206666660222
+1222220000000222
+1222222222222222
+1111111111111111
+1111111111111111
+LL..............
+LL..............
+LL..............`
 
 
 const speaking = tune`
@@ -290,38 +308,29 @@ const black = bitmap`
 0000000000000000
 0000000000000000`
 const wall = "w"
-const door = "d"
-
-
-//cutscene
-var cutscene = true
-setLegend(
-  //decoration
-  [ capsulet, capsulett],
-  
-  [ player, playerDarkF],
-  [ wall, bitmap`
-1111111L11111111
-1111111L11111111
-1111111L11111111
-1111111L11111111
+const wallt = bitmap`
 1111111L11111111
 1111111L11111111
 1111111L11111111
 LLLLLLLLLLLLLLLL
+111L111111111111
+111L111111111111
+111L111111111111
+LLLLLLLLLLLLLLLL
+11111111L1111111
+11111111L1111111
+11111111L1111111
+LLLLLLLLLLLLLLLL
 111111111111L111
 111111111111L111
 111111111111L111
-111111111111L111
-111111111111L111
-111111111111L111
-111111111111L111
-LLLLLLLLLLLLLLLL`],
-  [ door, bitmap`
+LLLLLLLLLLLLLLLL`
+const door = "d"
+const doort = bitmap`
 1110111111110111
 111011LLLL110111
 1110111111110111
-111011LLLL110111
+LLL011LLLL110LLL
 1110111111110111
 111011LLLL110111
 1110111111110111
@@ -329,73 +338,92 @@ LLL0111111110LLL
 111011111LL10111
 1110111111L10111
 1110111111110111
-1110111111110111
+LLL0111111110LLL
 1110111111110111
 1110111111110111
 11101LLLLLL10111
-LLL0111111110LLL`],
-  [ background, black],
+LLL0111111110LLL`
 
-//decoration
-  [ labbench1, labbench1t],
-  [ labbench2, labbench2t],
-  [ labbench3, labbench3t],
-  [ labbench4, labbench4t],
-  [ plant, plantt],
-  [ plant2, plant2t],
-  [ capsuleb, capsulebt]
+var interaction = "";
+var interacting = false;
+
+
+//cutscene
+var cutscene = true
+setLegend(
+  //decoration foreground
+  [capsulet, capsulett],
+
+  //main
+  [player, playerDarkF],
+  [wall, wallt],
+  [door, doort],
+  [background, black],
+
+  //decoration
+  [labbench1, labbench1t],
+  [labbench2, labbench2t],
+  [labbench3, labbench3t],
+  [labbench4, labbench4t],
+  [plant, plantt],
+  [plant2, plant2t],
+  [capsuleb, capsulebt],
+
+  //interactive
+  [noteonlabbench, noteonlabbencht]
 )
 setBackground(background)
 
-setTimeout(function(){
+setTimeout(function () {
   playTune(speaking)
-  addText("Where...", {x: 6, y: 4, color: color`2`})
-  
-  setTimeout(function(){
-  clearText()
-    setTimeout(function(){
-  playTune(speaking)
-  addText("am I?", {x: 8, y: 4, color: color`2`})
+  addText("Where...", { x: 6, y: 4, color: color`2` })
 
-  setTimeout(function(){
-  clearText()
-    
-  level = 1
-  setMap(levels[level])
-  playTune(intro)
-  setLegend(
-  [ player, playerF],
-  [ background, tile]
-)
-  addText("PR0JECT ZER0", {x: 4, y: 3, color: color`0`})
-  addText("BY CREEPERLULU", {x: 3, y: 14, color: color`0`})
-  
-//setBackground(tile)
-  cutscene = false
-    setTimeout(function(){
-  clearText()
-      
-}, 3500);
-}, 5000);
-}, 1000);
-}, 3000);
+  setTimeout(function () {
+    clearText()
+    setTimeout(function () {
+      playTune(speaking)
+      addText("am I?", { x: 8, y: 4, color: color`2` })
+
+      setTimeout(function () {
+        clearText()
+
+        level = 1
+        setMap(levels[level])
+        playTune(intro)
+        setLegend(
+          [player, playerF],
+          [background, tile]
+        )
+        addText("PR0JECT ZER0", { x: 4, y: 3, color: color`0` })
+        addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
+
+        //setBackground(tile)
+        cutscene = false
+        setTimeout(function () {
+          clearText()
+
+        }, 3500);
+      }, 5000);
+    }, 1000);
+  }, 3000);
 }, 1000);
 
-  
+
 setSolids(
   [player,
-   wall,
-   labbench1,
-   labbench2,
-   labbench3,
-   labbench4,
-   plant,
-   plant2,
-   capsuleb
-   
-  
+    wall,
+    labbench1,
+    labbench2,
+    labbench3,
+    labbench4,
+    plant,
+    plant2,
+    capsuleb,
+    noteonlabbench
 
-])
+
+
+  ])
 
 let level = 0
 const levels = [
@@ -418,9 +446,9 @@ wwwwdwwww
   map`
 wwwwwwwdw
 .◘.◘.....
-.•.•.....
+.•.•..♦♣.
 .........
-.◘.......
+.◘....○☻.
 .•.......
 ....p....`
 ]
@@ -430,101 +458,106 @@ setMap(levels[level])
 
 
 setPushables({
-  [ player ]: []
+  [player]: []
 })
 
 
 onInput("s", () => {
   if (cutscene != true) {
-  setLegend([player, playerF])
-  getFirst(player).y += 1
-}})
+    setLegend([player, playerF])
+    getFirst(player).y += 1
+  }
+})
 
 onInput("w", () => {
   if (cutscene != true) {
-  setLegend([ player, playerB])
-  getFirst(player).y += -1
-}})
+    setLegend([player, playerB])
+    getFirst(player).y += -1
+  }
+})
 
 onInput("a", () => {
   if (cutscene != true) {
-  setLegend([ player, playerL])
-  getFirst(player).x += -1
-}})
+    setLegend([player, playerL])
+    getFirst(player).x += -1
+  }
+})
 
 onInput("d", () => {
   if (cutscene != true) {
-  setLegend([ player, playerR])
-  getFirst(player).x += 1
-}})
+    setLegend([player, playerR])
+    getFirst(player).x += 1
+  }
+})
+
+// Interaction controller
+onInput("k", () => {
+  switch (interaction) {
+    case "note1":
+      interacting = true;
+      clearText()
+      addText("Hello I'm a note!", { x: 2, y: 14, color: color`0` })
+
+  }
+})
 
 
 afterInput(() => {
-  playTune(footstep)
-  
+  console.log(String(getFirst(player).x), String(getFirst(player).y))
+
+  if (cutscene != true) {
+    playTune(footstep)
+  }
+
   const winningSon = tilesWith(player, door);
+
+  if (interacting != true) {
+    if (level == 2) {
+      if (getFirst(player).x == 6 && getFirst(player).y == 3) {
+        addText("Press K to read.", { x: 2, y: 14, color: color`0` })
+        interaction = "note1";
+      } else {
+        clearText()
+        interaction = "";
+      }
+    }
+  } else {
+    interacting = false;
+  }
 
   if (winningSon.length >= 1) {
     level = level + 1;
     console.log(String(level))
 
-  if (level < levels.length) {
-    setLegend(
-  //decoration
-  [ capsulet, capsulett],
-  
-  [ player, playerB],
-  [ wall, bitmap`
-1111111L11111111
-1111111L11111111
-1111111L11111111
-1111111L11111111
-1111111L11111111
-1111111L11111111
-1111111L11111111
-LLLLLLLLLLLLLLLL
-111111111111L111
-111111111111L111
-111111111111L111
-111111111111L111
-111111111111L111
-111111111111L111
-111111111111L111
-LLLLLLLLLLLLLLLL`],
-  [ door, bitmap`
-1110111111110111
-111011LLLL110111
-1110111111110111
-111011LLLL110111
-1110111111110111
-111011LLLL110111
-1110111111110111
-LLL0111111110LLL
-111011111LL10111
-1110111111L10111
-1110111111110111
-1110111111110111
-1110111111110111
-1110111111110111
-11101LLLLLL10111
-LLL0111111110LLL`],
-  [ background, tile],
+    if (level < levels.length) {
+      setLegend(
+        //decoration foreground
+        [capsulet, capsulett],
 
-//decoration
-  [ labbench1, labbench1t],
-  [ labbench2, labbench2t],
-  [ labbench3, labbench3t],
-  [ labbench4, labbench4t],
-  [ plant, plantt],
-  [ plant2, plant2t],
-  [ capsuleb, capsulebt]
-)
-    setMap(levels[level]);
-    clearText();
-  } else {
-  addText("Congratulations.", {x: 2, y: 7, color: color`0`})
-  addText("You are now", {x: 4, y: 8, color: color`0`})
-  addText("a free robot.", {x: 3, y: 9, color: color`0`})
+        //main
+        [player, playerB],
+        [wall, wallt],
+        [door, doort],
+        [background, tile],
+
+        //decoration
+        [labbench1, labbench1t],
+        [labbench2, labbench2t],
+        [labbench3, labbench3t],
+        [labbench4, labbench4t],
+        [plant, plantt],
+        [plant2, plant2t],
+        [capsuleb, capsulebt],
+
+        //interactive
+        [noteonlabbench, noteonlabbencht]
+      )
+      setMap(levels[level]);
+      clearText();
+    } else {
+      addText("Congratulations.", { x: 2, y: 7, color: color`0` })
+      addText("You are now", { x: 4, y: 8, color: color`0` })
+      addText("a free robot.", { x: 3, y: 9, color: color`0` })
+    }
   }
-}
 })
