@@ -93,15 +93,75 @@ const playerDarkF = bitmap`
 ................
 ................`
 
+//decoration
+
+const labbench1 = "1"
+const labbench2 = "2"
+const labbench1t = bitmap`
+1111111111111111
+1222222222222222
+1222222222222222
+122222222227C722
+172777722227C722
+1272227222272722
+12733C7222722272
+127CC37222764472
+12733372227FF472
+1227772222277722
+1222222222222222
+1111111111111111
+1111111111111111
+LL..............
+LL..............
+LL..............`
+const labbench2t = bitmap`
+1111111111111111
+2222222222LLLLL1
+2111111111LLLLL1
+2122222222552LL1
+2177777777557LL1
+2177777757577LL1
+2177777757777121
+2177777775577121
+2177777777777121
+2111111111111121
+2222222222222221
+1111111111111111
+1111111111111111
+..............LL
+..............LL
+..............LL`
+const plant = "3"
+const plantt = bitmap`
+.....4..........
+.....44...4.....
+......44.44.....
+.DDDD.44444.DD..
+DDDDDD4444DDDDD.
+..DDDDD44DDDDDDD
+....DDD4DDDDD..D
+.....DDDDDD.....
+....C0DDDD0C....
+....CC0000CC....
+....CCCCCCCC....
+....CCCCCCCC....
+.....CCCCCC.....
+.....CCCCCC.....
+......CCCC......
+................`
+
 const speaking = tune`
 37.5: D4-37.5 + D5-37.5 + G5-37.5 + A4-37.5,
 37.5: D4-37.5 + D5-37.5 + A5-37.5 + A4-37.5,
 37.5: D4-37.5 + D5-37.5 + G5-37.5 + A4-37.5,
 37.5: C4-37.5 + C5-37.5 + F5-37.5 + A4-37.5,
 1050`
+const footstep = tune`
+60: E4/60,
+1860`
 const intro = tune`
-3000: D4-3000,
-93000`
+15000: D4-15000,
+465000`
 
 const background = "b"
 const tile = bitmap`
@@ -139,66 +199,92 @@ const black = bitmap`
 0000000000000000
 0000000000000000`
 const wall = "w"
+const door = "d"
 
-var cutscene = true
 
 //cutscene
-//setLegend([background, black])
+var cutscene = true
 setLegend(
   [ player, playerDarkF],
-  [ background, black]
+  [ wall, bitmap`
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+1111111L11111111
+LLLLLLLLLLLLLLLL
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+111111111111L111
+LLLLLLLLLLLLLLLL`],
+  [ door, bitmap`
+1110111111110111
+111011LLLL110111
+1110111111110111
+111011LLLL110111
+1110111111110111
+111011LLLL110111
+1110111111110111
+LLL0111111110LLL
+111011111LL10111
+1110111111L10111
+1110111111110111
+1110111111110111
+1110111111110111
+1110111111110111
+11101LLLLLL10111
+LLL0111111110LLL`],
+  [ background, black],
+
+//decoration
+  [ labbench1, labbench1t],
+  [ labbench2, labbench2t],
+  [ plant, plantt]
 )
 setBackground(background)
 
 setTimeout(function(){
   playTune(speaking)
-  addText("Where...", { 
-  x: 6,
-  y: 4,
-  color: color`2`
-})
+  addText("Where...", {x: 6, y: 4, color: color`2`})
   
-}, 1000);
-
-setTimeout(function(){
+  setTimeout(function(){
   clearText()
-}, 4000);
-
-setTimeout(function(){
+    setTimeout(function(){
   playTune(speaking)
-  addText("am I?", { 
-  x: 8,
-  y: 4,
-  color: color`2`
-  })
-}, 5000);
+  addText("am I?", {x: 8, y: 4, color: color`2`})
 
-setTimeout(function(){
+  setTimeout(function(){
   clearText()
+    
+  level = 1
+  setMap(levels[level])
   playTune(intro)
   setLegend(
   [ player, playerF],
   [ background, tile]
 )
-  addText("PR0JECT ZER0", { 
-  x: 4,
-  y: 3,
-  color: color`0`
-  })
-  
-  addText("BY CREEPERLULU", { 
-  x: 3,
-  y: 14,
-  color: color`0`
-  })
+  addText("PR0JECT ZER0", {x: 4, y: 3, color: color`0`})
+  addText("BY CREEPERLULU", {x: 3, y: 14, color: color`0`})
   
 //setBackground(tile)
   cutscene = false
-}, 10000);
+    setTimeout(function(){
+  clearText()
+      
+}, 3500);
+}, 5000);
+}, 1000);
+}, 3000);
+}, 1000);
+
   
-
-
-setSolids([])
+setSolids([player,wall, labbench1, labbench2])
 
 let level = 0
 const levels = [
@@ -209,10 +295,28 @@ const levels = [
 ....p....
 .........
 .........
+.........`,
+  map`
+wwwwdwwww
+3.......3
+.12...12.
+....p....
+.12...12.
+.........
+.12...12.`,
+  map`
+wwwwdwwww
+.........
+.........
+....p....
+.........
+.........
 .........`
 ]
 
 setMap(levels[level])
+
+
 
 setPushables({
   [ player ]: []
@@ -245,5 +349,21 @@ onInput("d", () => {
 
 
 afterInput(() => {
+  playTune(footstep)
   
+  const winningSon = tilesWith(player, door);
+
+  if (winningSon.length >= 1) {
+    level = level + 1;
+    console.log(String(level))
+
+  if (level < levels.length) {
+    setMap(levels[level]);
+    clearText();
+  } else {
+  addText("Congratulations.", {x: 2, y: 7, color: color`0`})
+  addText("You are now", {x: 4, y: 8, color: color`0`})
+  addText("a free robot.", {x: 3, y: 9, color: color`0`})
+  }
+}
 })
