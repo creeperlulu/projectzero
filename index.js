@@ -326,7 +326,8 @@ const error = tune`
 
 // main
 const background = "b"
-const tile = bitmap`
+const tile = "t"
+const tilet = bitmap`
 222222222222222L
 222222222222222L
 222222222222222L
@@ -416,6 +417,61 @@ LLLLL0L0LLLL00LL
 111101001111L111
 111111110011L111
 LLLLLLLLLL0LLLLL`
+const key = "k"
+const keyt = bitmap`
+................
+................
+................
+................
+................
+....L11.........
+...1L.LL....L...
+...L...11L11L...
+...11.L1..L1....
+....L1L...L1....
+................
+................
+................
+................
+................
+................`
+
+// Zero
+const zero = "z"
+const zerodeadt = bitmap`
+....L00L........
+...00000L00L....
+...0000L0000L...
+.8.L0000LL0000..
+..8L00000000L.0.
+..6L000000000...
+..6L0L0000000...
+.6.L000000L00...
+....L0000000D...
+...00000L00.D...
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
+const zerohalft = bitmap`
+....L00LL00L....
+...000000000L...
+...0000LLL000...
+...L7770077700..
+.8.L00000000L.3.
+..8L070000700...
+..6L070000700...
+.6.L000770000...
+.6..L000L00L.D..
+...00000000.....
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
 
 
 // Interaction
@@ -466,13 +522,18 @@ var currentBG;
 var currentPlayer;
 var hasKey = false;
 var wallKickTimes = 0;
+var brokenWallState = brokenwallt
+
+
+// EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
+const startLevel = 6
 
 
 // ----------START---------
 
 
 //CHANGE THIS FOR LEGEND
-function scene(backgroundtexture, playertexture) {
+function scene(backgroundtexture, playertexture, zerotexture) {
   setLegend(
     //decoration foreground
     [capsulet, capsulett],
@@ -480,10 +541,13 @@ function scene(backgroundtexture, playertexture) {
     //main
     [player, playertexture],
     [wall, wallt],
-    [brokenwall, brokenwallt],
+    [brokenwall, brokenWallState],
     [door, doort],
     [lockeddoor, doort],
     [plantgoal, plantgoalt],
+    [key, keyt],
+
+    [zero, zerotexture],
 
 
     //decoration
@@ -497,6 +561,7 @@ function scene(backgroundtexture, playertexture) {
     [deadbot, deadbott],
     [pushplant, plant2t],
     [blacktile, black],
+    [tile, tilet],
 
     //interactive
     [noteonlabbench, noteonlabbencht],
@@ -530,14 +595,13 @@ setTimeout(function () {
       setTimeout(function () {
         clearText()
 
-        level = 1
+        level = startLevel
         setMap(levels[level])
         playTune(intro)
-        scene(tile, playerF)
+        scene(tilet, playerF)
         addText("PR0JECT ZER0", { x: 4, y: 3, color: color`0` })
         addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
 
-        //setBackground(tile)
         cutscene = false
         setTimeout(function () {
           clearText()
@@ -616,7 +680,7 @@ wwwwwlwwwww
 ♥....p....♥`,
   map`
 ◘..wwlww..◘
-•.◘w...w◘.•
+•.◘w...w◘k•
 ..•w...w•..
 ...w...w...
 wwww...w♀xw
@@ -625,21 +689,18 @@ wwww...w♀xw
 .........◙.
 .....p.....`,
   map`
-wwwwwwwwwwwwwwwwwwwww
-..........◙..........
-.....................
-.....................
-........♪♪♪♪♪........
-.......♪.♪...♪.......
-.......♪♪..♪♪♪.......
-.......♪..♪..♪.......
-.......♪.♪...♪.......
-.......♪.♪...♪.......
-........♪♪♪♪♪........
-.....................
-.....................
-.....................
-..........p..........`
+wwwwwwwwwwwwwww
+.......◙.......
+...............
+.....♪♪♪♪♪.....
+....♪.♪...♪....
+....♪♪..♪♪♪....
+....♪..♪..♪....
+....♪.♪...♪....
+....♪.♪...♪....
+.....♪♪♪♪♪.....
+...............
+.......p.......`
 ]
 
 
@@ -765,7 +826,7 @@ onInput("k", () => {
         addText("Press K to close", { x: 2, y: 14, color: color`0` });
         break;
 
-        case "note4":
+      case "note4":
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
@@ -787,7 +848,7 @@ onInput("k", () => {
         addText("Press K to close", { x: 2, y: 14, color: color`2` });
         break;
 
-        case "note5":
+      case "note5":
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
@@ -810,7 +871,7 @@ onInput("k", () => {
         addText("Press K to close", { x: 2, y: 14, color: color`2` });
         break;
 
-        case "note6":
+      case "note6":
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
@@ -826,19 +887,27 @@ onInput("k", () => {
         addText("SIGN HERE:", { x: 0, y: 8, color: color`0` });
         addText("Press K to close", { x: 2, y: 14, color: color`0` });
         break;
+
+      case "key2":
+        hasKey = true;
+        playTune(getItem)
+        getFirst(key).type = tile
+        clearText();
+        break;
     }
   } else {
     clearText()
-    scene(tile, currentPlayer)
+    scene(tilet, currentPlayer)
     setMap(levels[level])
     interacting = false;
     getFirst(player).x = tempX
     getFirst(player).y = tempY
     if (level == 3) {
-    getFirst(pushplant).x = tempPlantX
-    getFirst(pushplant).y = tempPlantY}
-        
-    
+      getFirst(pushplant).x = tempPlantX
+      getFirst(pushplant).y = tempPlantY
+    }
+
+
   }
 })
 
@@ -883,20 +952,22 @@ afterInput(() => {
   if (level == 5) {
     isOnBrokenWall = tilesWith(player, brokenwall);
 
-    if (isOnBrokenWall.length >= 1) {
-
-      playTune(error)
-      addText("Door is locked.", { x: 2, y: 14, color: color`0` })
-      getFirst(player).y += 1
-    }
-    
-    if (wallKickTimes >= 5 && hasKey == false) {
+    if (wallKickTimes == 5 && brokenWallState == brokenwallt) {
+      brokenWallState = tilet
+      scene(currentBG, currentPlayer)
       playTune(getItem)
-      hasKey = true
+    } else {
+      if (isOnBrokenWall.length >= 1 && brokenWallState == brokenwallt) {
+        playTune(error)
+        wallKickTimes += 1
+        getFirst(player).y += 1
+      }
+
+
     }
   }
 
-  
+
   playerOnLockedDoor = tilesWith(player, lockeddoor);
 
 
@@ -912,7 +983,7 @@ afterInput(() => {
       } else {
         clearText()
         interaction = ""
-    }
+      }
     }
 
 
@@ -927,7 +998,7 @@ afterInput(() => {
       } else {
         clearText()
         interaction = ""
-    }
+      }
     }
 
     if (level == 5) {
@@ -940,10 +1011,13 @@ afterInput(() => {
       } else if (getFirst(player).x == 8 && getFirst(player).y == 5) {
         addText("Press K to read.", { x: 2, y: 14, color: color`0` })
         interaction = "note6"
+      } else if (getFirst(player).x == 9 && getFirst(player).y == 1 && hasKey == false) {
+        addText("Press K to grab.", { x: 2, y: 14, color: color`0` })
+        interaction = "key2";
       } else {
         clearText()
         interaction = ""
-    }
+      }
     }
 
 
