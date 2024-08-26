@@ -398,6 +398,24 @@ const plantgoalt = bitmap`
 .....LLLLLL.....
 ......LLLL......
 ................`
+const brokenwall = "x"
+const brokenwallt = bitmap`
+1111101L11111111
+1111101L11111111
+1111110L11111111
+LL0LLLLLLLLLLL0L
+110L111111000011
+1110111110111111
+111L011100001111
+LLLLL0L0LLLL00LL
+11011010L1111111
+10111101L1111111
+10111011L1111111
+0L0LL0LLLLLLL00L
+110110111111L110
+111101001111L111
+111111110011L111
+LLLLLLLLLL0LLLLL`
 
 
 // Interaction
@@ -447,6 +465,7 @@ var tempPlantY;
 var currentBG;
 var currentPlayer;
 var hasKey = false;
+var wallKickTimes = 0;
 
 
 // ----------START---------
@@ -461,6 +480,7 @@ function scene(backgroundtexture, playertexture) {
     //main
     [player, playertexture],
     [wall, wallt],
+    [brokenwall, brokenwallt],
     [door, doort],
     [lockeddoor, doort],
     [plantgoal, plantgoalt],
@@ -595,12 +615,12 @@ wwwwwlwwwww
 ..◙.....◙..
 ♥....p....♥`,
   map`
-◘..wwdww..◘
+◘..wwlww..◘
 •.◘w...w◘.•
 ..•w...w•..
 ...w...w...
-wwww...w♀ww
-♥◙........♂
+wwww...w♀xw
+♥◙........♠
 ...........
 .........◙.
 .....p.....`,
@@ -745,7 +765,7 @@ onInput("k", () => {
         addText("Press K to close", { x: 2, y: 14, color: color`0` });
         break;
 
-      case "note4":
+        case "note4":
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
@@ -767,7 +787,7 @@ onInput("k", () => {
         addText("Press K to close", { x: 2, y: 14, color: color`2` });
         break;
 
-      case "note5":
+        case "note5":
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
@@ -786,19 +806,39 @@ onInput("k", () => {
         addText("more quickly...", { x: 0, y: 9, color: color`2` });
         addText("Goodbye, my friends.", { x: 0, y: 10, color: color`2` });
         addText("Find the ones", { x: 0, y: 11, color: color`2` });
-        addText("behind all of this.", { x: 0, y: 11, color: color`2` });
+        addText("behind all of this.", { x: 0, y: 12, color: color`2` });
         addText("Press K to close", { x: 2, y: 14, color: color`2` });
+        break;
+
+        case "note6":
+
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        interacting = true;
+        setMap(ui[0]);
+        scene(yellow, currentPlayer);
+        clearText();
+        addText("Petition for the", { x: 0, y: 1, color: color`0` });
+        addText("laboratory to repair", { x: 0, y: 2, color: color`0` });
+        addText("this wall that has", { x: 0, y: 3, color: color`0` });
+        addText("been cracked for", { x: 0, y: 4, color: color`0` });
+        addText("ages", { x: 0, y: 5, color: color`0` });
+        addText("SIGN HERE:", { x: 0, y: 8, color: color`0` });
+        addText("Press K to close", { x: 2, y: 14, color: color`0` });
         break;
     }
   } else {
     clearText()
-    scene(tile, playerF)
+    scene(tile, currentPlayer)
     setMap(levels[level])
     interacting = false;
     getFirst(player).x = tempX
     getFirst(player).y = tempY
+    if (level == 3) {
     getFirst(pushplant).x = tempPlantX
-    getFirst(pushplant).y = tempPlantY
+    getFirst(pushplant).y = tempPlantY}
+        
+    
   }
 })
 
@@ -839,6 +879,24 @@ afterInput(() => {
     }
 
   }
+
+  if (level == 5) {
+    isOnBrokenWall = tilesWith(player, brokenwall);
+
+    if (isOnBrokenWall.length >= 1) {
+
+      playTune(error)
+      addText("Door is locked.", { x: 2, y: 14, color: color`0` })
+      getFirst(player).y += 1
+    }
+    
+    if (wallKickTimes >= 5 && hasKey == false) {
+      playTune(getItem)
+      hasKey = true
+    }
+  }
+
+  
   playerOnLockedDoor = tilesWith(player, lockeddoor);
 
 
@@ -854,7 +912,7 @@ afterInput(() => {
       } else {
         clearText()
         interaction = ""
-      }
+    }
     }
 
 
@@ -869,7 +927,7 @@ afterInput(() => {
       } else {
         clearText()
         interaction = ""
-      }
+    }
     }
 
     if (level == 5) {
@@ -879,10 +937,13 @@ afterInput(() => {
       } else if (getFirst(player).x == 9 && getFirst(player).y == 8) {
         addText("Press K to read logs", { x: 0, y: 14, color: color`0` })
         interaction = "note5"
+      } else if (getFirst(player).x == 8 && getFirst(player).y == 5) {
+        addText("Press K to read.", { x: 2, y: 14, color: color`0` })
+        interaction = "note6"
       } else {
         clearText()
         interaction = ""
-      }
+    }
     }
 
 
