@@ -335,6 +335,19 @@ const zerospeaking = tune`
 37.5: G4-37.5 + D4-37.5,
 37.5: C4-37.5 + F4-37.5,
 1050`
+const zeroscreaming = tune`
+37.5: D4/37.5 + A5/37.5 + E5-37.5,
+37.5: D4/37.5 + B5/37.5 + F5-37.5,
+37.5: D4/37.5 + A5/37.5 + E5-37.5,
+37.5: C4/37.5 + G5/37.5 + D5-37.5,
+1050`
+const dotdotdot = tune`
+75: D4~75,
+75,
+75: D4~75,
+75,
+75: D4~75,
+2025`
 const loading = tune`
 150: G4~150,
 150: G4~150,
@@ -534,6 +547,40 @@ const zerohalft = bitmap`
 ...L.L00L00L.L2L
 ...000000L0L0.00
 ...00......00...`
+const zerosurpriset = bitmap`
+....L00LL00L....
+...000000000L...
+...0000LLL000...
+...L0000000000..
+.8.L77700777L.3.
+..8L707007070...
+..6L777007770...
+.6.L000770000...
+.6..L000L00L.D..
+...00000000.....
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
+const zerohumt = bitmap`
+....L00LL00L....
+...000000000L...
+...0000LLL000...
+...L0000077700..
+.8.L77700000L.3.
+..8L000000700...
+..6L070000700...
+.6.L000770000...
+.6..L000L00L.D..
+...00000000.....
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
 const zeroloadt = bitmap`
 ....L00LL00L....
 ...000000000L...
@@ -607,7 +654,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 5
+const startLevel = 6
 
 
 // ----------START---------
@@ -670,29 +717,31 @@ function scene(backgroundtexture, playertexture, zerotexture) {
 
 
 const zeroMeetCutscene = async () => {
-  scene(tilet, playerB, currentZero)
+  scene(currentBG, playerB, currentZero)
   await delay(5000);
   playTune(boot)
-  scene(tilet, currentPlayer, zeroeyesopent)
+  scene(currentBG, currentPlayer, zeroeyesopent)
   await delay(3000);
   playTune(zerospeaking)
   addText("Oh wow...", { x: 5, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
-  scene(tilet, currentPlayer, zerohalft)
+  scene(currentBG, currentPlayer, zerohalft)
   clearText()
-  playTune(zerospeaking)
+  scene(currentBG, currentPlayer, zerosurpriset)
+  playTune(zeroscreaming)
   addText("...OH WOW!!!", { x: 4, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  playTune(zerospeaking)
+  playTune(zeroscreaming)
   addText("I'M ALIVE", { x: 5, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  playTune(zerospeaking)
+  playTune(zeroscreaming)
   addText("I CAN SEE YOU!!!", { x: 2, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  playTune(zerospeaking)
+  scene(currentBG, currentPlayer, zerohumt)
+  playTune(dotdotdot)
   addText("...", { x: 9, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
@@ -712,19 +761,21 @@ const zeroMeetCutscene = async () => {
   addText("I'm Project One.", { x: 2, y: 14, color: color`D` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  playTune(zerospeaking)
+  playTune(dotdotdot)
   addText("...", { x: 9, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  playTune(zerospeaking)
+  scene(currentBG, currentPlayer, zerosurpriset)
+  playTune(zeroscreaming)
   addText("...PROJECT ONE???", { x: 1, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  playTune(zerospeaking)
+  playTune(zeroscreaming)
   addText("THERE'S ANOTHER", { x: 2, y: 14, color: color`5` });
   addText("VERSION OF ME??", { x: 2, y: 15, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
+  scene(currentBG, currentPlayer, zerohumt)
   playTune(zerospeaking)
   addText("Wait, how long have", { x: 0, y: 14, color: color`5` });
   addText("I been turned off?", { x: 0, y: 15, color: color`5` });
@@ -734,6 +785,7 @@ const zeroMeetCutscene = async () => {
   addText("I have no idea.", { x: 2, y: 14, color: color`D` });
   await new Promise((res) => nextDialog = res)
   clearText()
+  scene(currentBG, currentPlayer, zerohalft)
   playTune(zerospeaking)
   addText("...I see.", { x: 5, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
@@ -792,32 +844,69 @@ const zeroMeetCutscene = async () => {
   addText(String(counter) + " seconds ago.", { x: 0, y: 15, color: color`D` });
   await new Promise((res) => nextDialog = res)
   clearText()
+  scene(currentBG, currentPlayer, zerohumt)
   playTune(zerospeaking)
   addText("Very precise.", { x: 3, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
-  addText("Thanks.", { x: 7, y: 12, color: color`D` });
+  addText("Thanks.", { x: 7, y: 14, color: color`D` });
   await new Promise((res) => nextDialog = res)
   clearText()
+  scene(currentBG, currentPlayer, zerohalft)
   playTune(zerospeaking)
   addText("Maybe I can search", { x: 1, y: 13, color: color`5` });
-  addText("my memory to", { x: 1, y: 14, color: color`5` });
+  addText("my memory to", { x: 3, y: 14, color: color`5` });
   addText("help you.", { x: 6, y: 15, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
+  scene(currentBG, currentPlayer, zeroloadt)
   playTune(loading)
-  scene(currentBackground, currentPlayer, zeroloadt)
+
   await delay(5000);
-  scene(currentBackground, currentPlayer, zerohalft)
+  scene(currentBG, currentPlayer, zerohalft)
   clearText()
-  playTune(zerospeaking)
-  addText("...", { x: 4, y: 14, color: color`5` });
+  playTune(dotdotdot)
+  addText("...", { x: 9, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
+  scene(currentBG, currentPlayer, zerosurpriset)
+  playTune(zeroscreaming)
+  addText("OH NO!!!", { x: 6, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zeroscreaming)
+  addText("I REMEMBER WHY I WAS", { x: 0, y: 14, color: color`5` });
+  addText("OFF THIS WHOLE TIME!", { x: 0, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zeroscreaming)
+  addText("QUICK, WE GOTTA HIDE", { x: 0, y: 14, color: color`5` });
+  addText("FROM THEM!", { x: 5, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(speaking)
+  addText("From who?", { x: 6, y: 14, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zeroscreaming)
+  addText("DID YOU NOT SEE THEM", { x: 0, y: 14, color: color`5` });
+  addText("ON YOUR WAY HERE?", { x: 1, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(speaking)
+  addText("I saw nobody.", { x: 3, y: 14, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  scene(currentBG, currentPlayer, zerohalft)
   playTune(zerospeaking)
-  addText("I'M ALIVE", { x: 5, y: 14, color: color`5` });
-
+  addText("Oh. Really?", { x: 5, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  scene(currentBG, currentPlayer, zerohalft)
+  playTune(zerospeaking)
+  addText("I guess they're", { x: 2, y: 14, color: color`5` });
+  addText("gone now...", { x: 5, y: 15, color: color`5` });
 
 
 
