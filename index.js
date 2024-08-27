@@ -335,6 +335,38 @@ const zerospeaking = tune`
 37.5: G4-37.5 + D4-37.5,
 37.5: C4-37.5 + F4-37.5,
 1050`
+const loading = tune`
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+150: G4~150,
+150: G4~150,
+150: D5~150,
+300,
+150: C4~150,
+150: C5~150,
+150`
 
 
 // main
@@ -473,7 +505,7 @@ const zeroeyesopent = bitmap`
 ...00000L00L....
 ...0000L0000L...
 .8.L7770LL0000..
-..8L00000770L.0.
+..8L00000770L.3.
 ..6L070000070...
 ..6L070000700...
 .6.L000770700...
@@ -494,6 +526,23 @@ const zerohalft = bitmap`
 ..8L070000700...
 ..6L070000700...
 .6.L000770000...
+.6..L000L00L.D..
+...00000000.....
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
+const zeroloadt = bitmap`
+....L00LL00L....
+...000000000L...
+...0000LLL000...
+...L0002100000..
+.8.L00200100L.7.
+..8L00000L000...
+..6L0000L0000...
+.6.L000000000...
 .6..L000L00L.D..
 ...00000000.....
 ...00L00000.....
@@ -553,16 +602,23 @@ var currentPlayer;
 var currentZero;
 var hasKey = false;
 var wallKickTimes = 0;
-var brokenWallState = brokenwallt
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 6
+const startLevel = 5
 
 
 // ----------START---------
+
+// Counter
+var counter = 0;
+
+function updateCounter() {
+  counter += 1
+}
+setInterval(updateCounter, 1000);
 
 
 
@@ -575,7 +631,7 @@ function scene(backgroundtexture, playertexture, zerotexture) {
     //main
     [player, playertexture],
     [wall, wallt],
-    [brokenwall, brokenWallState],
+    [brokenwall, brokenwallt],
     [door, doort],
     [lockeddoor, doort],
     [plantgoal, plantgoalt],
@@ -621,115 +677,148 @@ const zeroMeetCutscene = async () => {
   await delay(3000);
   playTune(zerospeaking)
   addText("Oh wow...", { x: 5, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   scene(tilet, currentPlayer, zerohalft)
   clearText()
   playTune(zerospeaking)
   addText("...OH WOW!!!", { x: 4, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("I'M ALIVE", { x: 5, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("I CAN SEE YOU!!!", { x: 2, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("...", { x: 9, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("whoever you are?", { x: 2, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("I'm Project Zero.", { x: 1, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("What about you?", { x: 2, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
   addText("I'm Project One.", { x: 2, y: 14, color: color`D` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("...", { x: 9, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("...PROJECT ONE???", { x: 1, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("THERE'S ANOTHER", { x: 2, y: 14, color: color`5` });
   addText("VERSION OF ME??", { x: 2, y: 15, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("Wait, how long have", { x: 0, y: 14, color: color`5` });
   addText("I been turned off?", { x: 0, y: 15, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
   addText("I have no idea.", { x: 2, y: 14, color: color`D` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("...I see.", { x: 5, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("...Why are you here?", { x: 0, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
   addText("I don't even know", { x: 0, y: 14, color: color`D` });
-  addText("what place this is.", { x: 0, y: 15, color: color`D` });
-  await new Promise((res)=>nextDialog=res)
+  addText("what this place is.", { x: 0, y: 15, color: color`D` });
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
   addText("Where am I?", { x: 4, y: 14, color: color`D` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("This is the Process", { x: 0, y: 13, color: color`5` });
   addText("Laboratories", { x: 4, y: 14, color: color`5` });
-  addText("headquarters.", { x: 3, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  addText("headquarters.", { x: 3, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
   addText("This is probably", { x: 2, y: 13, color: color`5` });
   addText("where you were", { x: 3, y: 14, color: color`5` });
-  addText("created.", { x: 6, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  addText("created.", { x: 6, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
-  addText("Created?", { x: 4, y: 14, color: color`D` });
-  await new Promise((res)=>nextDialog=res)
+  addText("Created?", { x: 6, y: 14, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
   playTune(zerospeaking)
   addText("You were created", { x: 2, y: 14, color: color`5` });
   addText("to serve a purpose.", { x: 1, y: 15, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
   addText("What purpose?", { x: 3, y: 14, color: color`D` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
+  clearText()
   playTune(zerospeaking)
   addText("No idea.", { x: 6, y: 14, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
+  clearText()
   playTune(zerospeaking)
   addText("Do you know when", { x: 2, y: 14, color: color`5` });
   addText("you were made?", { x: 3, y: 15, color: color`5` });
-  await new Promise((res)=>nextDialog=res)
+  await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
-  addText("What purpose?", { x: 3, y: 14, color: color`D` });
-  
-  
+  addText("No. My only memories", { x: 0, y: 12, color: color`D` });
+  addText("are my name and the", { x: 0, y: 13, color: color`D` });
+  addText("fact I was activated", { x: 0, y: 14, color: color`D` });
+  addText(String(counter) + " seconds ago.", { x: 0, y: 15, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("Very precise.", { x: 3, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(speaking)
+  addText("Thanks.", { x: 7, y: 12, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("Maybe I can search", { x: 1, y: 13, color: color`5` });
+  addText("my memory to", { x: 1, y: 14, color: color`5` });
+  addText("help you.", { x: 6, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(loading)
+  scene(currentBackground, currentPlayer, zeroloadt)
+  await delay(5000);
+  scene(currentBackground, currentPlayer, zerohalft)
+  clearText()
+  playTune(zerospeaking)
+  addText("...", { x: 4, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("I'M ALIVE", { x: 5, y: 14, color: color`5` });
+
+
 
 
 
@@ -741,17 +830,17 @@ const zeroMeetCutscene = async () => {
 var cutscene = true
 scene(black, playerDarkF, zerodeadt)
 
-setTimeout(function() {
+setTimeout(function () {
   playTune(speaking)
   addText("Where...", { x: 6, y: 4, color: color`2` })
 
-  setTimeout(function() {
+  setTimeout(function () {
     clearText()
-    setTimeout(function() {
+    setTimeout(function () {
       playTune(speaking)
       addText("am I?", { x: 8, y: 4, color: color`2` })
 
-      setTimeout(function() {
+      setTimeout(function () {
         clearText()
 
         level = startLevel
@@ -762,7 +851,7 @@ setTimeout(function() {
         addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
 
         cutscene = false
-        setTimeout(function() {
+        setTimeout(function () {
           clearText()
 
         }, 3500);
@@ -1051,7 +1140,10 @@ onInput("k", () => {
       case "key2":
         hasKey = true;
         playTune(getItem)
-        getFirst(key).type = tile
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        clearTile(getFirst(key).x, getFirst(key).y)
+        addSprite(tempX, tempY, player)
         clearText();
         break;
 
@@ -1074,7 +1166,7 @@ onInput("k", () => {
 
 
     }
-  } else if (cutscene != true && interacting == true){
+  } else if (cutscene != true && interacting == true) {
     clearText()
     scene(tilet, currentPlayer, currentZero)
     setMap(levels[level])
@@ -1084,11 +1176,11 @@ onInput("k", () => {
     if (level == 3) {
       getFirst(pushplant).x = tempPlantX
       getFirst(pushplant).y = tempPlantY
-    } 
-
-  } else if (cutscene == true){
-      if(nextDialog) nextDialog()
     }
+
+  } else if (cutscene == true) {
+    if (nextDialog) nextDialog()
+  }
 })
 
 onInput("j", () => {
@@ -1118,7 +1210,7 @@ afterInput(() => {
 
 
     if (getFirst(player).x == 8 && getFirst(player).y == 5 && hasKey == false) {
-      setTimeout(function() {
+      setTimeout(function () {
         if (getFirst(player).x == 8 && getFirst(player).y == 5 && hasKey == false) {
           playTune(getItem)
           hasKey = true
@@ -1132,12 +1224,12 @@ afterInput(() => {
   if (level == 5) {
     isOnBrokenWall = tilesWith(player, brokenwall);
 
-    if (wallKickTimes == 5 && brokenWallState == brokenwallt) {
-      brokenWallState = tilet
-      scene(currentBG, currentPlayer, currentZero)
+    if (wallKickTimes == 5 && tilesWith(brokenwall) != 0) {
+      addSprite(getFirst(brokenwall).x, getFirst(brokenwall).y - 1, player)
+      clearTile(getFirst(brokenwall).x, getFirst(brokenwall).y)
       playTune(getItem)
     } else {
-      if (isOnBrokenWall.length >= 1 && brokenWallState == brokenwallt) {
+      if (isOnBrokenWall.length >= 1) {
         playTune(error)
         wallKickTimes += 1
         getFirst(player).y += 1
