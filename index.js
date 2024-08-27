@@ -555,6 +555,8 @@ var hasKey = false;
 var wallKickTimes = 0;
 var brokenWallState = brokenwallt
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
 const startLevel = 6
@@ -607,6 +609,79 @@ function scene(backgroundtexture, playertexture, zerotexture) {
   currentPlayer = playertexture
   currentZero = zerotexture
 }
+
+
+const zeroMeetCutscene = async () => {
+  scene(tilet, playerB, currentZero)
+  await delay(5000);
+  playTune(boot)
+  scene(tilet, currentPlayer, zeroeyesopent)
+  await delay(3000);
+  playTune(zerospeaking)
+  addText("Oh wow...", { x: 5, y: 14, color: color`5` });
+  await delay(3000);
+  scene(tilet, currentPlayer, zerohalft)
+  clearText()
+  playTune(zerospeaking)
+  addText("...OH WOW!!!", { x: 4, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("I'M ALIVE", { x: 5, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("I CAN SEE YOU!!!", { x: 2, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("...", { x: 9, y: 14, color: color`5` });
+  await delay(1500);
+  clearText()
+  playTune(zerospeaking)
+  addText("whoever you are?", { x: 2, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("I'm Project Zero.", { x: 1, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("What about you?", { x: 2, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(speaking)
+  addText("I'm Project One.", { x: 2, y: 14, color: color`D` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("...", { x: 9, y: 14, color: color`5` });
+  await delay(4000);
+  clearText()
+  playTune(zerospeaking)
+  addText("...PROJECT ONE???", { x: 1, y: 14, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(zerospeaking)
+  addText("THERE'S ANOTHER", { x: 2, y: 14, color: color`5` });
+  addText("VERSION OF ME??", { x: 2, y: 15, color: color`5` });
+  await delay(3000);
+  clearText()
+  playTune(zerospeaking)
+  addText("Wait, how long have", { x: 1, y: 14, color: color`5` });
+  addText("I been turned off?", { x: 1, y: 15, color: color`5` });
+  await delay(2000);
+  clearText()
+  playTune(speaking)
+  addText("I have no idea.", { x: 2, y: 14, color: color`D` });
+  await delay(4000);
+  clearText()
+  playTune(zerospeaking)
+  addText("...I see.", { x: 5, y: 14, color: color`5` });
+
+
+
+};
 
 
 
@@ -724,7 +799,7 @@ wwww...w♀xw
   map`
 wwwwwwwwwwwwwww
 .......z.......
-...............
+.......p.......
 .....♪♪♪♪♪.....
 ....♪.♪...♪....
 ....♪♪..♪♪♪....
@@ -733,7 +808,7 @@ wwwwwwwwwwwwwww
 ....♪.♪...♪....
 .....♪♪♪♪♪.....
 ...............
-.......p.......`
+...............`
 ]
 
 
@@ -937,59 +1012,9 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         clearText();
+        zeroMeetCutscene()
 
-        setTimeout(function () {
 
-          playTune(boot)
-          scene(tilet, currentPlayer, zeroeyesopent)
-          setTimeout(function () {
-            playTune(zerospeaking)
-            addText("Oh wow...", { x: 2, y: 14, color: color`5` });
-            setTimeout(function () {
-              scene(tilet, currentPlayer, zerohalft)
-              clearText()
-              playTune(zerospeaking)
-              addText("...OH WOW!!!", { x: 2, y: 14, color: color`5` });
-              setTimeout(function () {
-                clearText()
-                playTune(zerospeaking)
-                addText("I'M ALIVE", { x: 2, y: 14, color: color`5` });
-                setTimeout(function () {
-                  clearText()
-                  playTune(zerospeaking)
-                  addText("I CAN SEE YOU!!!", { x: 0, y: 14, color: color`5` });
-                  setTimeout(function () {
-                    clearText()
-                    playTune(zerospeaking)
-                    addText("...", { x: 2, y: 14, color: color`5` });
-                    setTimeout(function () {
-                      clearText()
-                      playTune(zerospeaking)
-                      addText("whoever you are?", { x: 0, y: 14, color: color`5` });
-                      setTimeout(function () {
-                        clearText()
-                        playTune(zerospeaking)
-                        addText("I'm Project Zero.", { x: 0, y: 14, color: color`5` });
-                        setTimeout(function () {
-                          clearText()
-                          playTune(zerospeaking)
-                          addText("What about you?", { x: 0, y: 14, color: color`5` });
-                          setTimeout(function () {
-                            clearText()
-                            playTune(speaking)
-                            addText("I'm Project One.", { x: 0, y: 14, color: color`D` });
-
-                          }, 2000);
-                        }, 2000);
-                      }, 2000);
-                    }, 1500);
-                  }, 2000);
-                }, 2000);
-              }, 2000);
-            }, 3000);
-          }, 3000);
-
-        }, 5000);
 
 
 
