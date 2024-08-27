@@ -322,6 +322,19 @@ const error = tune`
 120: D4-120 + D5/120 + B5^120,
 120: D4-120 + D5/120 + B5^120,
 3600`
+const boot = tune`
+230.76923076923077: C4^230.76923076923077 + C5^230.76923076923077 + F5~230.76923076923077,
+230.76923076923077: F4~230.76923076923077 + D5^230.76923076923077 + G5^230.76923076923077,
+230.76923076923077,
+230.76923076923077: D4~230.76923076923077 + G4^230.76923076923077 + C5^230.76923076923077,
+230.76923076923077: C5~230.76923076923077 + A5^230.76923076923077,
+6230.7692307692305`
+const zerospeaking = tune`
+37.5: G4-37.5 + D4-37.5,
+37.5: A4-37.5 + D4-37.5,
+37.5: G4-37.5 + D4-37.5,
+37.5: C4-37.5 + F4-37.5,
+1050`
 
 
 // main
@@ -455,6 +468,23 @@ const zerodeadt = bitmap`
 ...L.L00L00L.L2L
 ...000000L0L0.00
 ...00......00...`
+const zeroeyesopent = bitmap`
+....L00L........
+...00000L00L....
+...0000L0000L...
+.8.L7770LL0000..
+..8L00000770L.0.
+..6L070000070...
+..6L070000700...
+.6.L000770700...
+....L0000000D...
+...00000L00.D...
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
 const zerohalft = bitmap`
 ....L00LL00L....
 ...000000000L...
@@ -520,6 +550,7 @@ var tempPlantX;
 var tempPlantY;
 var currentBG;
 var currentPlayer;
+var currentZero;
 var hasKey = false;
 var wallKickTimes = 0;
 var brokenWallState = brokenwallt
@@ -574,13 +605,14 @@ function scene(backgroundtexture, playertexture, zerotexture) {
   setBackground(background)
   currentBG = backgroundtexture
   currentPlayer = playertexture
+  currentZero = zerotexture
 }
 
 
 
 //cutscene
 var cutscene = true
-scene(black, playerDarkF)
+scene(black, playerDarkF, zerodeadt)
 
 setTimeout(function () {
   playTune(speaking)
@@ -598,7 +630,7 @@ setTimeout(function () {
         level = startLevel
         setMap(levels[level])
         playTune(intro)
-        scene(tilet, playerF)
+        scene(tilet, playerF, currentZero)
         addText("PR0JECT ZER0", { x: 4, y: 3, color: color`0` })
         addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
 
@@ -626,7 +658,8 @@ setSolids(
     noteonlabbench,
     deadbot,
     pushplant,
-    noteonwall
+    noteonwall,
+    zero
 
 
 
@@ -690,7 +723,7 @@ wwww...w♀xw
 .....p.....`,
   map`
 wwwwwwwwwwwwwww
-.......◙.......
+.......z.......
 ...............
 .....♪♪♪♪♪.....
 ....♪.♪...♪....
@@ -728,35 +761,35 @@ setPushables({
 
 onInput("s", () => {
   if (cutscene != true && interacting != true) {
-    scene(currentBG, playerF)
+    scene(currentBG, playerF, currentZero)
     getFirst(player).y += 1
   }
 })
 
 onInput("w", () => {
   if (cutscene != true && interacting != true) {
-    scene(currentBG, playerB)
+    scene(currentBG, playerB, currentZero)
     getFirst(player).y += -1
   }
 })
 
 onInput("a", () => {
   if (cutscene != true && interaction != true) {
-    scene(currentBG, playerL)
+    scene(currentBG, playerL, currentZero)
     getFirst(player).x += -1
   }
 })
 
 onInput("d", () => {
   if (cutscene != true && interacting != true) {
-    scene(currentBG, playerR)
+    scene(currentBG, playerR, currentZero)
     getFirst(player).x += 1
   }
 })
 
 // Interaction controller
 onInput("k", () => {
-  if (interacting != true) {
+  if (cutscene != true && interacting != true) {
 
     switch (interaction) {
 
@@ -766,7 +799,7 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         setMap(ui[0]);
-        scene(yellow, currentPlayer);
+        scene(yellow, currentPlayer, currentZero);
         clearText();
         addText("There is a reason", { x: 0, y: 1, color: color`0` });
         addText("why they are all", { x: 0, y: 2, color: color`0` });
@@ -793,7 +826,7 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         setMap(ui[0]);
-        scene(black, currentPlayer);
+        scene(black, currentPlayer, currentZero);
         clearText();
         addText("Project 9515 - Logs", { x: 0, y: 1, color: color`2` });
         addText("WARNING !", { x: 0, y: 2, color: color`6` });
@@ -817,7 +850,7 @@ onInput("k", () => {
         tempPlantY = getFirst(pushplant).y;
         interacting = true;
         setMap(ui[0]);
-        scene(yellow, currentPlayer);
+        scene(yellow, currentPlayer, currentZero);
         clearText();
         addText("Argh! I'm stuck", { x: 0, y: 1, color: color`0` });
         addText("again... Where", { x: 0, y: 2, color: color`0` });
@@ -832,7 +865,7 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         setMap(ui[0]);
-        scene(black, currentPlayer);
+        scene(black, currentPlayer, currentZero);
         clearText();
         addText("Project 1565 - Logs", { x: 0, y: 1, color: color`2` });
         addText("No errors.", { x: 0, y: 2, color: color`2` });
@@ -854,7 +887,7 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         setMap(ui[0]);
-        scene(black, currentPlayer);
+        scene(black, currentPlayer, currentZero);
         clearText();
         addText("Project 1566 - Logs", { x: 0, y: 1, color: color`2` });
         addText("I tried to", { x: 0, y: 2, color: color`2` });
@@ -877,7 +910,7 @@ onInput("k", () => {
         tempY = getFirst(player).y;
         interacting = true;
         setMap(ui[0]);
-        scene(yellow, currentPlayer);
+        scene(yellow, currentPlayer, currentZero);
         clearText();
         addText("Petition for the", { x: 0, y: 1, color: color`0` });
         addText("laboratory to repair", { x: 0, y: 2, color: color`0` });
@@ -894,10 +927,79 @@ onInput("k", () => {
         getFirst(key).type = tile
         clearText();
         break;
+
+
+      case "zeromeet":
+        // cutscene
+        cutscene = true
+
+        tempX = getFirst(player).x;
+        tempY = getFirst(player).y;
+        interacting = true;
+        clearText();
+
+        setTimeout(function () {
+
+          playTune(boot)
+          scene(tilet, currentPlayer, zeroeyesopent)
+          setTimeout(function () {
+            playTune(zerospeaking)
+            addText("Oh wow...", { x: 2, y: 14, color: color`5` });
+            setTimeout(function () {
+              scene(tilet, currentPlayer, zerohalft)
+              clearText()
+              playTune(zerospeaking)
+              addText("...OH WOW!!!", { x: 2, y: 14, color: color`5` });
+              setTimeout(function () {
+                clearText()
+                playTune(zerospeaking)
+                addText("I'M ALIVE", { x: 2, y: 14, color: color`5` });
+                setTimeout(function () {
+                  clearText()
+                  playTune(zerospeaking)
+                  addText("I CAN SEE YOU!!!", { x: 0, y: 14, color: color`5` });
+                  setTimeout(function () {
+                    clearText()
+                    playTune(zerospeaking)
+                    addText("...", { x: 2, y: 14, color: color`5` });
+                    setTimeout(function () {
+                      clearText()
+                      playTune(zerospeaking)
+                      addText("whoever you are?", { x: 0, y: 14, color: color`5` });
+                      setTimeout(function () {
+                        clearText()
+                        playTune(zerospeaking)
+                        addText("I'm Project Zero.", { x: 0, y: 14, color: color`5` });
+                        setTimeout(function () {
+                          clearText()
+                          playTune(zerospeaking)
+                          addText("What about you?", { x: 0, y: 14, color: color`5` });
+                          setTimeout(function () {
+                            clearText()
+                            playTune(speaking)
+                            addText("I'm Project One.", { x: 0, y: 14, color: color`D` });
+
+                          }, 2000);
+                        }, 2000);
+                      }, 2000);
+                    }, 1500);
+                  }, 2000);
+                }, 2000);
+              }, 2000);
+            }, 3000);
+          }, 3000);
+
+        }, 5000);
+
+
+
+        break;
+
+
     }
   } else {
     clearText()
-    scene(tilet, currentPlayer)
+    scene(tilet, currentPlayer, currentZero)
     setMap(levels[level])
     interacting = false;
     getFirst(player).x = tempX
@@ -954,7 +1056,7 @@ afterInput(() => {
 
     if (wallKickTimes == 5 && brokenWallState == brokenwallt) {
       brokenWallState = tilet
-      scene(currentBG, currentPlayer)
+      scene(currentBG, currentPlayer, currentZero)
       playTune(getItem)
     } else {
       if (isOnBrokenWall.length >= 1 && brokenWallState == brokenwallt) {
@@ -971,7 +1073,7 @@ afterInput(() => {
   playerOnLockedDoor = tilesWith(player, lockeddoor);
 
 
-  if (interacting != true) {
+  if (cutscene != true && interacting != true) {
     // Level 2 interactions
     if (level == 2) {
       if (getFirst(player).x == 6 && getFirst(player).y == 3) {
@@ -1021,6 +1123,17 @@ afterInput(() => {
     }
 
 
+    if (level == 6) {
+      if (getFirst(player).x == 7 && getFirst(player).y == 2) {
+        addText("Press K to read logs", { x: 0, y: 14, color: color`0` })
+        interaction = "zeromeet"
+      } else {
+        clearText()
+        interaction = ""
+      }
+    }
+
+
 
   }
 
@@ -1029,7 +1142,7 @@ afterInput(() => {
     console.log(String(level))
 
     if (level < levels.length) {
-      scene(currentBG, playerB)
+      scene(currentBG, playerB, currentZero)
       setMap(levels[level]);
       clearText();
     } else {
@@ -1047,7 +1160,7 @@ afterInput(() => {
       console.log(String(level))
 
       if (level < levels.length) {
-        scene(currentBG, playerB)
+        scene(currentBG, playerB, currentZero)
         setMap(levels[level]);
         clearText();
       } else {
