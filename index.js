@@ -726,7 +726,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 5
+const startLevel = 6
 
 
 // ----------START---------
@@ -750,19 +750,32 @@ async function genDialog(text, textX, textY, color, voice, emotion, music, behav
   clearText()
   scene(currentBG, currentPlayer, emotion, music)
   playTune(voice)
-  if (text.length <= 16) {
-  addText(text, { x: textX, y: textY, color: color });
+  if (text.length <= 20) {
+    addText(text, { x: textX, y: textY, color: color });
   } else {
     // Decompose string
+
     var finalTexts = []
-    var words text.split(" ")
+    var words = text.split(" ")
     var currentText = ""
-    for (let i = 0; i < words.length; i++) {
-      if (currentText.length + words[i] <=16) {
-      currentText = currentText + words
+    var i = 0
+
+    while (i < words.length - 1) {
+      console.log(words.length)
+      while (currentText.length + words[i].length <= 20 && i < words.length) {
+        console.log(words[i])
+        console.log(currentText.length)
+        currentText = currentText + words[i] + " "
+        i += 1
       }
-}
-    
+
+      currentText = currentText.slice(0, -1);
+      console.log(currentText)
+      finalTexts.push(currentText)
+      currentText = ""
+    }
+    console.log(finalTexts)
+
   }
 }
 
@@ -831,19 +844,21 @@ const zeroMeetCutscene = async () => {
   playTune(boot)
   scene(currentBG, currentPlayer, zeroeyesopent, "nochange")
 
-  genDialog("Oh wow...", 5, 14, color`5`, zerospeaking, currentZero, "nochange", 3000)
-  genDialog("...OH WOW!!!", 4, 14, color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
-  genDialog("I'M ALIVE", 5, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
-  genDialog("I CAN SEE YOU!!!", 2, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
-  genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
-  genDialog("whoever you are?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  genDialog("I'm Project Zero.", 1, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  genDialog("What about you?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  genDialog("I'm Project One.", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
-  genDialog("...PROJECT ONE???", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
-  
-  
+  await genDialog("Oh wow...", 5, 14, color`5`, zerospeaking, currentZero, "nochange", 3000)
+  await genDialog("This text is a test to try and see if my script works.", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("...OH WOW!!!", 4, 14, color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
+  await genDialog("I'M ALIVE", 5, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("I CAN SEE YOU!!!", 2, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
+  await genDialog("whoever you are?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  await genDialog("I'm Project Zero.", 1, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  await genDialog("What about you?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  await genDialog("I'm Project One.", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  await genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
+  await genDialog("...PROJECT ONE???", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+
+
+
   await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zeroscreaming)
