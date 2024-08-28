@@ -759,43 +759,62 @@ async function genDialog(text, textX, textY, color, voice, emotion, music, behav
     var words = text.split(" ")
     var currentText = ""
 
-    while (words[0] != undefined) {
+    while (words.length >= 0) {
       console.log(words.length)
-      while (currentText.length + words[0].length <= 20 && words[0] != undefined) {
+      while (currentText.length + words[0].length <= 20) {
         currentText = currentText + words[0] + " "
         console.log(words[0])
         words.splice(0, 1)
-        console.log("After splice: " + words[0])
+        console.log(words.length)
+
+        if (words.length == 0) {
+          break
+        }
 
       }
+      console.log(currentText)
 
       currentText = currentText.slice(0, -1);
       console.log(currentText)
       finalTexts.push(currentText)
       currentText = ""
+      if (words.length == 0) {
+        break
+      }
     }
     console.log(finalTexts)
+    var textXs = []
+    for (let i = 0; i < finalTexts.length; i++) {
+      if (finalTexts[i].length % 2 == 1) {
+        console.log(finalTexts[i].length)
+        textXs.push((21 - finalTexts[i].length) / 2)
+      } else {
+        textXs.push((20 - finalTexts[i].length) / 2)
+      }
+    }
+
+    console.log(textXs)
     switch (finalTexts.length) {
       default:
         addText("TEXT TOO LONG!", { x: 3, y: 7, color: color`3` });
         break;
 
       case 2:
-        addText(finalTexts[0], { x: 0, y: 14, color: color });
-        addText(finalTexts[1], { x: 0, y: 15, color: color });
+        addText(finalTexts[0], { x: textXs[0], y: 14, color: color });
+        addText(finalTexts[1], { x: textXs[1], y: 15, color: color });
         break;
 
       case 3:
-        addText(finalTexts[0], { x: 0, y: 13, color: color });
-        addText(finalTexts[1], { x: 0, y: 14, color: color });
-        addText(finalTexts[2], { x: 0, y: 15, color: color });
+        addText(finalTexts[0], { x: textXs[0], y: 13, color: color });
+        addText(finalTexts[1], { x: textXs[1], y: 14, color: color });
+        addText(finalTexts[2], { x: textXs[2], y: 15, color: color });
         break;
 
       case 4:
-        addText(finalTexts[0], { x: 0, y: 12, color: color });
-        addText(finalTexts[1], { x: 0, y: 13, color: color });
-        addText(finalTexts[2], { x: 0, y: 14, color: color });
-        addText(finalTexts[3], { x: 0, y: 15, color: color });
+        addText(finalTexts[0], { x: textXs[0], y: 12, color: color });
+        addText(finalTexts[1], { x: textXs[1], y: 13, color: color });
+        addText(finalTexts[2], { x: textXs[2], y: 14, color: color });
+        addText(finalTexts[3], { x: textXs[3], y: 15, color: color });
         break;
 
 
@@ -871,7 +890,7 @@ const zeroMeetCutscene = async () => {
   scene(currentBG, currentPlayer, zeroeyesopent, "nochange")
 
   await genDialog("Oh wow...", 5, 14, color`5`, zerospeaking, currentZero, "nochange", 3000)
-  await genDialog("This text is a test to try and see if my script works.", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("This text is a test to try and see if my script works. And it does, I think!", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
   await genDialog("...OH WOW!!!", 4, 14, color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
   await genDialog("I'M ALIVE", 5, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
   await genDialog("I CAN SEE YOU!!!", 2, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
