@@ -758,15 +758,15 @@ async function genDialog(text, textX, textY, color, voice, emotion, music, behav
     var finalTexts = []
     var words = text.split(" ")
     var currentText = ""
-    var i = 0
 
-    while (i < words.length - 1) {
+    while (words[0] != undefined) {
       console.log(words.length)
-      while (currentText.length + words[i].length <= 20 && i < words.length) {
-        console.log(words[i])
-        console.log(currentText.length)
-        currentText = currentText + words[i] + " "
-        i += 1
+      while (currentText.length + words[0].length <= 20 && words[0] != undefined) {
+        currentText = currentText + words[0] + " "
+        console.log(words[0])
+        words.splice(0, 1)
+        console.log("After splice: " + words[0])
+
       }
 
       currentText = currentText.slice(0, -1);
@@ -775,6 +775,32 @@ async function genDialog(text, textX, textY, color, voice, emotion, music, behav
       currentText = ""
     }
     console.log(finalTexts)
+    switch (finalTexts.length) {
+      default:
+        addText("TEXT TOO LONG!", { x: 3, y: 7, color: color`3` });
+        break;
+
+      case 2:
+        addText(finalTexts[0], { x: 0, y: 14, color: color });
+        addText(finalTexts[1], { x: 0, y: 15, color: color });
+        break;
+
+      case 3:
+        addText(finalTexts[0], { x: 0, y: 13, color: color });
+        addText(finalTexts[1], { x: 0, y: 14, color: color });
+        addText(finalTexts[2], { x: 0, y: 15, color: color });
+        break;
+
+      case 4:
+        addText(finalTexts[0], { x: 0, y: 12, color: color });
+        addText(finalTexts[1], { x: 0, y: 13, color: color });
+        addText(finalTexts[2], { x: 0, y: 14, color: color });
+        addText(finalTexts[3], { x: 0, y: 15, color: color });
+        break;
+
+
+
+    }
 
   }
 }
