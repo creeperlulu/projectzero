@@ -739,6 +739,19 @@ function updateCounter() {
 }
 setInterval(updateCounter, 1000);
 
+// Dialogue generator
+async function genDialog(text, textX, textY, color, voice, emotion, music, behavior) {
+  if (behavior == "input") {
+    await new Promise((res) => nextDialog = res)
+  } else {
+    await delay(behavior);
+  }
+  clearText()
+  scene(currentBG, currentPlayer, emotion, music)
+  playTune(voice)
+  addText(text, { x: textX, y: textY, color: color });
+}
+
 
 
 //CHANGE THIS FOR LEGEND
@@ -803,9 +816,8 @@ const zeroMeetCutscene = async () => {
   await delay(5000);
   playTune(boot)
   scene(currentBG, currentPlayer, zeroeyesopent, "nochange")
-  await delay(3000);
-  playTune(zerospeaking)
-  addText("Oh wow...", { x: 5, y: 14, color: color`5` });
+
+  genDialog("Oh wow...", 5, 14, color`5`, zerospeaking, currentZero, "nochange", 3000)
   await new Promise((res) => nextDialog = res)
   clearText()
   scene(currentBG, currentPlayer, zerosurpriset, zerotheme)
@@ -1089,6 +1101,43 @@ const zeroMeetCutscene = async () => {
     playTune(zerospeaking)
     addText("When they arrived,", { x: 1, y: 14, color: color`5` });
     addText("they made a mess.", { x: 2, y: 15, color: color`5` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(zerospeaking)
+    addText("Some robots decided", { x: 0, y: 12, color: color`5` });
+    addText("to escape them by", { x: 1, y: 13, color: color`5` });
+    addText("uploading their", { x: 3, y: 14, color: color`5` });
+    addText("memory to the cloud.", { x: 0, y: 15, color: color`5` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(zerospeaking)
+    addText("To do that, they had", { x: 0, y: 13, color: color`5` });
+    addText("to access the", { x: 1, y: 14, color: color`5` });
+    addText("central room,", { x: 3, y: 15, color: color`5` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(zerospeaking)
+    addText("and connect to the", { x: 1, y: 13, color: color`5` });
+    addText("central computer.", { x: 2, y: 14, color: color`5` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(zerospeaking)
+    addText("But that would mean", { x: 0, y: 13, color: color`5` });
+    addText("their bodies would", { x: 1, y: 14, color: color`5` });
+    addText("die.", { x: 8, y: 15, color: color`5` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(zerospeaking)
+    addText("Other robots like me", { x: 0, y: 13, color: color`5` });
+    addText("wanted to keep their", { x: 0, y: 14, color: color`5` });
+    addText("bodies,", { x: 7, y: 15, color: color`5` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(zerospeaking)
+    addText("so we tried to", { x: 3, y: 12, color: color`5` });
+    addText("escape from them,", { x: 2, y: 13, color: color`5` });
+    addText("but we were too", { x: 3, y: 14, color: color`5` });
+    addText("slow.", { x: 8, y: 15, color: color`5` });
   }
 
 
