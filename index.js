@@ -718,6 +718,7 @@ var currentZero;
 var hasKey = false;
 var wallKickTimes = 0;
 var wallBroken = false
+var talkedToRobot1 = false
 
 var playback = playTune(emptymusic, Infinity)
 
@@ -725,7 +726,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 1
+const startLevel = 5
 
 
 // ----------START---------
@@ -788,7 +789,7 @@ function scene(backgroundtexture, playertexture, zerotexture, musicState) {
     playback.end()
   } else if (musicState == "nochange") {
     //change nothing
-  } else {    
+  } else {
     playback.end()
     playback = playTune(musicState, Infinity)
   }
@@ -890,6 +891,12 @@ const zeroMeetCutscene = async () => {
   await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
+  addText("You can see their", { x: 1, y: 13, color: color`5` });
+  addText("logo printed on", { x: 2, y: 14, color: color`5` });
+  addText("the ground.", { x: 5, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
   addText("This is probably", { x: 2, y: 13, color: color`5` });
   addText("where you were", { x: 3, y: 14, color: color`5` });
   addText("created.", { x: 6, y: 15, color: color`5` });
@@ -910,6 +917,11 @@ const zeroMeetCutscene = async () => {
   clearText()
   playTune(zerospeaking)
   addText("No idea.", { x: 6, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("I just know that all", { x: 0, y: 14, color: color`5` });
+  addText("robots have one.", { x: 2, y: 15, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zerospeaking)
@@ -942,7 +954,6 @@ const zeroMeetCutscene = async () => {
   clearText()
   scene(currentBG, currentPlayer, zeroloadt, "nochange")
   playTune(loading)
-
   await delay(5000);
   scene(currentBG, currentPlayer, zerohalft, "nochange")
   clearText()
@@ -983,10 +994,102 @@ const zeroMeetCutscene = async () => {
   addText("Oh. Really?", { x: 5, y: 14, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
-  scene(currentBG, currentPlayer, zerohalft, "nochange")
   playTune(zerospeaking)
   addText("I guess they're", { x: 2, y: 14, color: color`5` });
   addText("gone now...", { x: 5, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(speaking)
+  addText('Who are "they"??', { x: 2, y: 14, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("It is not important.", { x: 0, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("They... almost", { x: 3, y: 14, color: color`5` });
+  addText("got me...", { x: 6, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("I tricked them by", { x: 1, y: 14, color: color`5` });
+  addText("dismembering myself,", { x: 0, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("and turning myself", { x: 1, y: 13, color: color`5` });
+  addText("off, to make it look", { x: 0, y: 14, color: color`5` });
+  addText("like I was dead.", { x: 2, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("I knew I would", { x: 3, y: 13, color: color`5` });
+  addText("be off until", { x: 4, y: 14, color: color`5` });
+  addText("someone woke me up.", { x: 0, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("And you just did!", { x: 2, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("Hooray!", { x: 7, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(dotdotdot)
+  addText("...", { x: 9, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("How did you", { x: 5, y: 14, color: color`5` });
+  addText("get here?", { x: 6, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(zerospeaking)
+  addText("Those silly humans", { x: 1, y: 14, color: color`5` });
+  addText("made it so hard.", { x: 2, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(speaking)
+  addText("I solved the", { x: 4, y: 14, color: color`D` });
+  addText("puzzles.", { x: 6, y: 15, color: color`D` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  scene(currentBG, currentPlayer, zerosurpriset, "nochange")
+  playTune(zeroscreaming)
+  addText("ALL OF THEM???", { x: 3, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  scene(currentBG, currentPlayer, zerohalft, "nochange")
+  playTune(zerospeaking)
+  addText("You really are the", { x: 1, y: 14, color: color`5` });
+  addText("superior model!", { x: 3, y: 15, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(dotdotdot)
+  addText("...", { x: 9, y: 14, color: color`5` });
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  playTune(dotdotdot)
+  addText("...", { x: 9, y: 14, color: color`D` });
+  if (talkedToRobot1) {
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(speaking)
+    addText("I saw a robot's logs", { x: 0, y: 14, color: color`D` });
+    addText("about televersing.", { x: 1, y: 15, color: color`D` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    playTune(speaking)
+    addText("What is it?", { x: 5, y: 14, color: color`D` });
+    await new Promise((res) => nextDialog = res)
+    clearText()
+    scene(currentBG, currentPlayer, zerohalft, "nochange")
+    playTune(zerospeaking)
+    addText("When they arrived,", { x: 1, y: 14, color: color`5` });
+    addText("they made a mess.", { x: 2, y: 15, color: color`5` });
+  }
 
 
 
@@ -1108,7 +1211,7 @@ wwww...w♀xw
   map`
 wwwwwwwwwwwwwww
 .......z.......
-.......p.......
+...............
 .....♪♪♪♪♪.....
 ....♪.♪...♪....
 ....♪♪..♪♪♪....
@@ -1117,7 +1220,7 @@ wwwwwwwwwwwwwww
 ....♪.♪...♪....
 .....♪♪♪♪♪.....
 ...............
-...............`
+.......p.......`
 ]
 
 
@@ -1269,6 +1372,7 @@ onInput("k", () => {
 
         tempX = getFirst(player).x;
         tempY = getFirst(player).y;
+        talkedToRobot1 = true
         interacting = true;
         setMap(ui[0]);
         scene(black, currentPlayer, currentZero, "nochange");
@@ -1359,7 +1463,6 @@ onInput("j", () => {
 
 
 afterInput(() => {
-  console.log(String(hasKey))
   if (cutscene != true) {
     playTune(footstep)
   }
@@ -1488,14 +1591,13 @@ afterInput(() => {
 
   if (winningSon.length >= 1) {
     level = level + 1;
-    console.log(String(level))
 
     if (level < levels.length) {
       scene(currentBG, playerB, currentZero, "nochange")
       setMap(levels[level]);
       if (level == 6) {
-          scene(currentBG, playerB, currentZero, "nomusic")
-        }
+        scene(currentBG, playerB, currentZero, "nomusic")
+      }
       clearText();
     } else {
       addText("Congratulations.", { x: 2, y: 7, color: color`0` })
@@ -1509,7 +1611,6 @@ afterInput(() => {
     if (hasKey == true) {
       hasKey = false;
       level = level + 1;
-      console.log(String(level))
 
       if (level < levels.length) {
         scene(currentBG, playerB, currentZero, "nochange")
@@ -1519,7 +1620,7 @@ afterInput(() => {
         }
 
 
-          
+
         clearText();
       } else {
         addText("Congratulations.", { x: 2, y: 7, color: color`0` })
