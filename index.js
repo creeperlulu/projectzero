@@ -739,6 +739,7 @@ function updateCounter() {
 }
 setInterval(updateCounter, 1000);
 
+
 // Dialogue generator
 async function genDialog(text, textX, textY, color, voice, emotion, music, behavior) {
   if (behavior == "input") {
@@ -749,7 +750,20 @@ async function genDialog(text, textX, textY, color, voice, emotion, music, behav
   clearText()
   scene(currentBG, currentPlayer, emotion, music)
   playTune(voice)
+  if (text.length <= 16) {
   addText(text, { x: textX, y: textY, color: color });
+  } else {
+    // Decompose string
+    var finalTexts = []
+    var words text.split(" ")
+    var currentText = ""
+    for (let i = 0; i < words.length; i++) {
+      if (currentText.length + words[i] <=16) {
+      currentText = currentText + words
+      }
+}
+    
+  }
 }
 
 
@@ -818,49 +832,18 @@ const zeroMeetCutscene = async () => {
   scene(currentBG, currentPlayer, zeroeyesopent, "nochange")
 
   genDialog("Oh wow...", 5, 14, color`5`, zerospeaking, currentZero, "nochange", 3000)
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerosurpriset, zerotheme)
-  playTune(zeroscreaming)
-  addText("...OH WOW!!!", { x: 4, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zeroscreaming)
-  addText("I'M ALIVE", { x: 5, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zeroscreaming)
-  addText("I CAN SEE YOU!!!", { x: 2, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerohumt, "nochange")
-  playTune(dotdotdot)
-  addText("...", { x: 9, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("whoever you are?", { x: 2, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("I'm Project Zero.", { x: 1, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("What about you?", { x: 2, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("I'm Project One.", { x: 2, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(dotdotdot)
-  addText("...", { x: 9, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerosurpriset, "nochange")
-  playTune(zeroscreaming)
-  addText("...PROJECT ONE???", { x: 1, y: 14, color: color`5` });
+  genDialog("...OH WOW!!!", 4, 14, color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
+  genDialog("I'M ALIVE", 5, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  genDialog("I CAN SEE YOU!!!", 2, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
+  genDialog("whoever you are?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  genDialog("I'm Project Zero.", 1, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  genDialog("What about you?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  genDialog("I'm Project One.", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
+  genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
+  genDialog("...PROJECT ONE???", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  
+  
   await new Promise((res) => nextDialog = res)
   clearText()
   playTune(zeroscreaming)
