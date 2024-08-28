@@ -666,6 +666,23 @@ const zeroloadt = bitmap`
 ...L.L00L00L.L2L
 ...000000L0L0.00
 ...00......00...`
+const zerosadt = bitmap`
+....L00LL00L....
+...000000000L...
+...0000LLL000...
+...L0000000000..
+.8.L07700770L.3.
+..8L700000070...
+..6L070000700...
+.6.L000770000...
+.6..L000L00L.D..
+...00000000.....
+...00L00000.....
+..00L0LLLLL.00..
+..020000LL02L0L.
+...L.L00L00L.L2L
+...000000L0L0.00
+...00......00...`
 
 
 // Interaction
@@ -741,7 +758,7 @@ setInterval(updateCounter, 1000);
 
 
 // Dialogue generator
-async function genDialog(text, textX, textY, color, voice, emotion, music, behavior) {
+async function genDialog(text, color, voice, emotion, music, behavior) {
   if (behavior == "input") {
     await new Promise((res) => nextDialog = res)
   } else {
@@ -751,7 +768,15 @@ async function genDialog(text, textX, textY, color, voice, emotion, music, behav
   scene(currentBG, currentPlayer, emotion, music)
   playTune(voice)
   if (text.length <= 20) {
-    addText(text, { x: textX, y: textY, color: color });
+    var textX;
+    if (text.length % 2 == 1) {
+      console.log(text.length)
+      textX = (21 - text.length) / 2
+    } else {
+      textX = (20 - text.length) / 2
+    }
+    addText(text, { x: textX, y: 14, color: color });
+
   } else {
     // Decompose string
 
@@ -889,155 +914,58 @@ const zeroMeetCutscene = async () => {
   playTune(boot)
   scene(currentBG, currentPlayer, zeroeyesopent, "nochange")
 
-  await genDialog("Oh wow...", 5, 14, color`5`, zerospeaking, currentZero, "nochange", 3000)
-  await genDialog("This text is a test to try and see if my script works. And it does, I think!", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
-  await genDialog("...OH WOW!!!", 4, 14, color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
-  await genDialog("I'M ALIVE", 5, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
-  await genDialog("I CAN SEE YOU!!!", 2, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
-  await genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
-  await genDialog("whoever you are?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  await genDialog("I'm Project Zero.", 1, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  await genDialog("What about you?", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  await genDialog("I'm Project One.", 2, 14, color`5`, zerospeaking, zerohumt, "nochange", "input")
-  await genDialog("...", 9, 14, color`5`, dotdotdot, zerohumt, "nochange", "input")
-  await genDialog("...PROJECT ONE???", 1, 14, color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("Oh wow...", color`5`, zerospeaking, currentZero, "nochange", 3000)
+  await genDialog("This text is a test to try and see if my script works. And it does, I think!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("...OH WOW!!!", color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
+  await genDialog("I'M ALIVE", color`5`, zeroscreaming, currentZero, "nochange", "input")
+  await genDialog("I CAN SEE YOU!!!", color`5`, zeroscreaming, currentZero, "nochange", "input")
+  await genDialog("...", color`5`, dotdotdot, zerohumt, "nochange", "input")
+  await genDialog("whoever you are?", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("I'm Project Zero.", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("What about you?", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("I'm Project One.", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("...", color`5`, dotdotdot, currentZero, "nochange", "input")
+  await genDialog("...PROJECT ONE???", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("THERE'S ANOTHER VERSION OF ME??", color`5`, zeroscreaming, currentZero, "nochange", "input")
+  await genDialog("Wait, how long have I been turned off?", color`5`, zerospeaking, zerohumt, "nochange", "input")
+  await genDialog("I have no idea.", color`D`, speaking, zerohumt, "nochange", "input")
+  await genDialog("...I see", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("...Why are you here?", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("I don't even know what place this is.", color`D`, speaking, zerohalft, "nochange", "input")
+  await genDialog("Where am I, exactly?", color`D`, speaking, zerohalft, "nochange", "input")
+  await genDialog("You are in the Process Laboratories headquarters.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("You can see their logo printed on the ground.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("This is probably where you were created.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("Created?", color`D`, speaking, zerohalft, "nochange", "input")
+  await genDialog("Yes. You were created to serve a purpose.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("What purpose?", color`D`, speaking, zerohalft, "nochange", "input")
+  await genDialog("No idea.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("I just know that all robots have one.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("Do you at least know when you were made?", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("No. My only memories are my name and the fact I was activated " + String(counter) + " seconds ago.", color`D`, speaking, zerohalft, "nochange", "input")
+  await genDialog("Very precise.", color`5`, zerospeaking, zerohumt, "nochange", "input")
+  await genDialog("Thanks.", color`D`, speaking, zerohumt, "nochange", "input")
+  await genDialog("Well... Maybe I can search my memory to help you?", color`5`, zerospeaking, zerohalft, "nochange", "input")
 
-
-
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zeroscreaming)
-  addText("THERE'S ANOTHER", { x: 2, y: 14, color: color`5` });
-  addText("VERSION OF ME??", { x: 2, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerohumt, "nochange")
-  playTune(zerospeaking)
-  addText("Wait, how long have", { x: 0, y: 14, color: color`5` });
-  addText("I been turned off?", { x: 0, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("I have no idea.", { x: 2, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerohalft, "nochange")
-  playTune(zerospeaking)
-  addText("...I see.", { x: 5, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("...Why are you here?", { x: 0, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("I don't even know", { x: 0, y: 14, color: color`D` });
-  addText("what this place is.", { x: 0, y: 15, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("Where am I?", { x: 4, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("This is the Process", { x: 0, y: 13, color: color`5` });
-  addText("Laboratories", { x: 4, y: 14, color: color`5` });
-  addText("headquarters.", { x: 3, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("You can see their", { x: 1, y: 13, color: color`5` });
-  addText("logo printed on", { x: 2, y: 14, color: color`5` });
-  addText("the ground.", { x: 5, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("This is probably", { x: 2, y: 13, color: color`5` });
-  addText("where you were", { x: 3, y: 14, color: color`5` });
-  addText("created.", { x: 6, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("Created?", { x: 6, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("You were created", { x: 2, y: 14, color: color`5` });
-  addText("to serve a purpose.", { x: 1, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("What purpose?", { x: 3, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("No idea.", { x: 6, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("I just know that all", { x: 0, y: 14, color: color`5` });
-  addText("robots have one.", { x: 2, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zerospeaking)
-  addText("Do you know when", { x: 2, y: 14, color: color`5` });
-  addText("you were made?", { x: 3, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("No. My only memories", { x: 0, y: 12, color: color`D` });
-  addText("are my name and the", { x: 0, y: 13, color: color`D` });
-  addText("fact I was activated", { x: 0, y: 14, color: color`D` });
-  addText(String(counter) + " seconds ago.", { x: 0, y: 15, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerohumt, "nochange")
-  playTune(zerospeaking)
-  addText("Very precise.", { x: 3, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("Thanks.", { x: 7, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerohalft, "nochange")
-  playTune(zerospeaking)
-  addText("Maybe I can search", { x: 1, y: 13, color: color`5` });
-  addText("my memory to", { x: 3, y: 14, color: color`5` });
-  addText("help you.", { x: 6, y: 15, color: color`5` });
   await new Promise((res) => nextDialog = res)
   clearText()
   scene(currentBG, currentPlayer, zeroloadt, "nochange")
   playTune(loading)
-  await delay(5000);
-  scene(currentBG, currentPlayer, zerohalft, "nochange")
-  clearText()
-  playTune(dotdotdot)
-  addText("...", { x: 9, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  scene(currentBG, currentPlayer, zerosurpriset, "nochange")
-  playTune(zeroscreaming)
-  addText("OH NO!!!", { x: 6, y: 14, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zeroscreaming)
-  addText("I REMEMBER WHY I WAS", { x: 0, y: 14, color: color`5` });
-  addText("OFF THIS WHOLE TIME!", { x: 0, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zeroscreaming)
-  addText("QUICK, WE GOTTA HIDE", { x: 0, y: 14, color: color`5` });
-  addText("FROM THEM!", { x: 5, y: 15, color: color`5` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(speaking)
-  addText("From who?", { x: 6, y: 14, color: color`D` });
-  await new Promise((res) => nextDialog = res)
-  clearText()
-  playTune(zeroscreaming)
-  addText("DID YOU NOT SEE THEM", { x: 0, y: 14, color: color`5` });
-  addText("ON YOUR WAY HERE?", { x: 1, y: 15, color: color`5` });
+
+  await genDialog("...", color`5`, dotdotdot, zerohalft, "nochange", 5000)
+  await genDialog("OH NO!!!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("I REMEMBER WHY I WAS OFF THIS WHOLE TIME!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("QUICK, WE GOTTA HIDE FROM THEM!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("From who?", color`D`, speaking, zerohumt, "nochange", "input")
+  await genDialog("DID YOU NOT SEE THEM ON YOUR WAY HERE?!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("I saw nobody.", color`D`, speaking, zerohumt, "nochange", "input")
+  await genDialog("Oh, really?", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("I guess they're gone now...", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog('Who are "they"?', color`D`, speaking, zerohumt, "nochange", "input")
+  await genDialog("It's not important.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+
+
+
   await new Promise((res) => nextDialog = res)
   clearText()
   playTune(speaking)
