@@ -916,6 +916,7 @@ const yellow = bitmap`
 6666666666666666
 6666666666666666
 6666666666666666`
+var cutscene = false
 var tempX;
 var tempY;
 var tempPlantX;
@@ -1098,8 +1099,50 @@ function scene(backgroundtexture, playertexture, zerotexture, musicState) {
 
 }
 
+//CHANGE THIS FOR SOLIDS
+const alwaysSolids = [player,
+  wall,
+  labbench1,
+  labbench2,
+  labbench3,
+  labbench4,
+  plant,
+  plant2,
+  capsuleb,
+  noteonlabbench,
+  deadbot,
+  pushplant,
+  noteonwall]
+setSolids([...alwaysSolids, zero])
 
 
+const introCutscene = async () => {
+  cutscene = true
+  scene(black, playerDarkF, zerodeadt, "nomusic")
+  await delay(1000);
+  playTune(speaking)
+  addText("Where...", { x: 6, y: 4, color: color`2` })
+  await delay(3000);
+  clearText()
+  await delay(1000);
+  playTune(speaking)
+  addText("am I?", { x: 8, y: 4, color: color`2` })
+  await delay(3000);
+  clearText()
+  await delay(1000);
+  clearText()
+
+  level = startLevel
+  setMap(levels[level])
+  scene(tilet, playerF, currentZero, thelab)
+  addText("PR0JECT ZER0", { x: 4, y: 3, color: color`0` })
+  addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
+
+  cutscene = false
+  await delay(3500);
+  clearText()
+
+};
 const zeroMeetCutscene = async () => {
   scene(currentBG, playerB, currentZero, "nochange")
   await delay(5000);
@@ -1224,79 +1267,15 @@ const zeroMeetCutscene = async () => {
   cutscene = false
   scene(currentBG, currentPlayer, zeroF, thelab)
   setSolids(
-    [player,
-      wall,
-      labbench1,
-      labbench2,
-      labbench3,
-      labbench4,
-      plant,
-      plant2,
-      capsuleb,
-      noteonlabbench,
-      deadbot,
-      pushplant,
-      noteonwall
-    ])
+    alwaysSolids)
 
 
 };
 
-
-
-//cutscene
-var cutscene = true
-scene(black, playerDarkF, zerodeadt, "nomusic")
-
-setTimeout(function () {
-  playTune(speaking)
-  addText("Where...", { x: 6, y: 4, color: color`2` })
-
-  setTimeout(function () {
-    clearText()
-    setTimeout(function () {
-      playTune(speaking)
-      addText("am I?", { x: 8, y: 4, color: color`2` })
-
-      setTimeout(function () {
-        clearText()
-
-        level = startLevel
-        setMap(levels[level])
-        scene(tilet, playerF, currentZero, thelab)
-        addText("PR0JECT ZER0", { x: 4, y: 3, color: color`0` })
-        addText("BY CREEPERLULU", { x: 3, y: 14, color: color`0` })
-
-        cutscene = false
-        setTimeout(function () {
-          clearText()
-
-        }, 3500);
-      }, 5000);
-    }, 1000);
-  }, 3000);
-}, 1000);
-
-
-setSolids(
-  [player,
-    wall,
-    labbench1,
-    labbench2,
-    labbench3,
-    labbench4,
-    plant,
-    plant2,
-    capsuleb,
-    noteonlabbench,
-    deadbot,
-    pushplant,
-    noteonwall,
-    zero
+introCutscene();
 
 
 
-  ])
 
 let level = 0
 const levels = [
@@ -1366,7 +1345,20 @@ wwwwwwwwwwwwwlw
 ....♪.♪...♪....
 .....♪♪♪♪♪.....
 ...............
-♥......p......♠`
+♥......p......♠`,
+  map`
+wwwwwwwwwwwwwlw
+...............
+...............
+...............
+...............
+...............
+...............
+...............
+...............
+...............
+.............p.
+.............z.`
 ]
 
 
@@ -1396,9 +1388,10 @@ onInput("s", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerF, currentZero, "nochange")
     getFirst(player).y += 1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).y + 1 != getFirst(playerY)) {
-      scene(currentBG, currentPlayer, zeroB, "nochange")
-      getFirst(zero).y = getFirst(player).y + 1
+    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).y + 1 != getFirst(player).y || getFirst(zero).x != getFirst(player).x)) {
+      scene(currentBG, currentPlayer, zeroF, "nochange")
+      getFirst(zero).x = getFirst(player).x
+      getFirst(zero).y = getFirst(player).y - 1
     }
   }
 })
@@ -1407,9 +1400,10 @@ onInput("w", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerB, currentZero, "nochange")
     getFirst(player).y += -1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).y - 1 != getFirst(playerY)) {
+    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).y - 1 != getFirst(player).y || getFirst(zero).x != getFirst(player).x)) {
       scene(currentBG, currentPlayer, zeroB, "nochange")
-      getFirst(zero).y = getFirst(player).y - 1
+      getFirst(zero).x = getFirst(player).x
+      getFirst(zero).y = getFirst(player).y + 1
 
     }
   }
@@ -1419,9 +1413,10 @@ onInput("a", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerL, currentZero, "nochange")
     getFirst(player).x += -1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).x - 1 != getFirst(playerX)) {
+    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).x - 1 != getFirst(player).x || getFirst(zero).y != getFirst(player).y)) {
       scene(currentBG, currentPlayer, zeroL, "nochange")
       getFirst(zero).x = getFirst(player).x + 1
+      getFirst(zero).y = getFirst(player).y
 
     }
   }
@@ -1431,9 +1426,10 @@ onInput("d", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerR, currentZero, "nochange")
     getFirst(player).x += 1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).x + 1 != getFirst(playerX)) {
+    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).x + 1 != getFirst(player).x || getFirst(zero).y != getFirst(player).y)) {
       scene(currentBG, currentPlayer, zeroR, "nochange")
       getFirst(zero).x = getFirst(player).x - 1
+      getFirst(zero).y = getFirst(player).y
 
     }
 
