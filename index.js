@@ -419,38 +419,71 @@ const thelab = tune`
 1500: A4^1500 + A5~1500,
 1500: E4^1500`
 const zerotheme = tune`
-6000: D4~6000,
-6000: A4~6000,
-6000: G4~6000,
-6000: F4~6000,
-6000: D4~6000,
-6000: C5~6000,
-6000: B4~6000,
-6000: A4~6000,
-6000: E4~6000,
-6000: E5~6000,
-6000: D5~6000,
-6000: C5~6000,
-6000: B4~6000,
-6000: A4~6000,
-6000: G4~6000,
-6000: F4~6000,
-6000: D4~6000,
-6000: A4~6000,
-6000: G4~6000,
-6000: F4~6000,
-6000: D4~6000,
-6000: C5~6000,
-6000: B4~6000,
-6000: A4~6000,
-6000: D4~6000,
-6000: E5~6000,
-6000: D5~6000,
-6000: C5~6000,
-6000: B4~6000,
-6000: A4~6000,
-6000: G4~6000,
-6000: F4~6000`
+500: D4~500 + C5/500 + E5^500,
+500: A4~500,
+500: G4~500 + E4/500,
+500: F4~500,
+500: D4~500 + F4/500,
+500: C5~500,
+500: B4~500,
+500: A4~500 + F5^500,
+500: E4~500 + C5/500 + E5^500,
+500: E5~500,
+500: D5~500 + E4/500,
+500: C5~500,
+500: B4~500 + G4/500,
+500: A4~500,
+500: G4~500,
+500: F4~500 + F5^500,
+500: D4~500 + C5/500 + D5^500,
+500: A4~500,
+500: G4~500 + E4/500,
+500: F4~500,
+500: D4~500 + F4/500,
+500: C5~500,
+500: B4~500,
+500: A4~500 + F5^500,
+500: D4~500 + C5/500 + E5^500,
+500: E5~500,
+500: D5~500 + E4/500,
+500: C5~500,
+500: B4~500 + A4/500,
+500: A4~500,
+500: G4~500,
+500: F4~500 + G5^500`
+const betrayal = tune`
+500: A4-500 + E4~500 + A5^500,
+500: E5-500,
+500: A4-500 + E4/500 + E5^500,
+500: E5-500 + D4/500,
+500: A4-500 + E4/500 + E5^500,
+500: E5-500,
+500: A4-500 + E4~500 + E5^500,
+500: E5-500,
+500: G4-500 + D4~500 + A5^500,
+500: D5-500,
+500: G4-500 + D4/500 + E5^500,
+500: D5-500 + C4/500,
+500: G4-500 + D4/500 + E5^500,
+500: D5-500,
+500: G4-500 + D4~500 + E5^500,
+500: D5-500,
+500: F4-500 + C4~500 + A5^500,
+500: C5-500,
+500: F4-500 + C4/500 + E5^500,
+500: C5-500 + D4/500,
+500: F4-500 + C4/500 + E5^500,
+500: C5-500,
+500: F4-500 + C4~500 + E5^500,
+500: C5-500,
+500: E4-500 + A5^500 + A4~500,
+500: B4-500,
+500: E4-500 + E5^500 + A4~500 + C4/500,
+500: B4-500 + D4/500,
+500: F4-500 + F5^500 + C5/500,
+500: C5-500,
+500: G4-500 + G5^500 + D4~500 + E5/500,
+500: D5-500`
 
 
 const emptymusic = tune``
@@ -690,6 +723,92 @@ const zerosadt = bitmap`
 ...000000L0L0.00
 ...00......00...`
 
+const zeroF = bitmap`
+....L00LL00L.3..
+...000000000L0..
+...0000LLL000...
+...L777007770...
+...L00000000L...
+...L070000700...
+...0070000700...
+...0000770000...
+....L000L00L....
+...L00L000LLL...
+...L0L0007L00...
+...00L0000000...
+...0200L00L20...
+....L00L0LLL....
+.....L000L0.....
+.....LL..00.....`
+const zeroB = bitmap`
+..C.000LL000....
+..0LL000000LL...
+...LLL000000L...
+...000022L000...
+...L002772000...
+...000277200L...
+...0LL02200L0...
+...00L00000L0...
+....002222LL....
+...L02020020L...
+...002200220L...
+...LL200202L0...
+...0220200220...
+....LL22220L....
+.....0L000L.....
+.....00..LL.....`
+const zeroR = bitmap`
+......L000......
+.....LL0000.....
+.....00000L.....
+....00LL0070....
+....00LLL000....
+....0000L070....
+....0000L070....
+.....0000007....
+......L0L0......
+.....000L0L.....
+.....000L0L.....
+.....0L000L.....
+.....0L2000.....
+......0L0L......
+.......0L.......
+.......0L.......`
+const zeroL = bitmap`
+......L000......
+.....00L00L.....
+.....L00000.....
+....070L0000....
+....000L0L00....
+....07000L00....
+....0700LL00....
+....7000000.....
+......0L0L......
+.....00L0L0.....
+.....L0L000.....
+.....0L00L0.....
+.....0L02L0.....
+......00L0......
+.......0L.......
+.......L0.......`
+const zeroDarkF = bitmap`
+.............3..
+................
+................
+....77700777....
+....00000000....
+....07000070....
+....07000070....
+....00077000....
+................
+................
+.........7......
+................
+................
+................
+................
+................`
+
 
 // Interaction
 var interaction = "";
@@ -749,7 +868,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 6
+const startLevel = 1
 
 
 // ----------START---------
@@ -921,7 +1040,6 @@ const zeroMeetCutscene = async () => {
   scene(currentBG, currentPlayer, zeroeyesopent, "nochange")
 
   await genDialog("Oh wow...", color`5`, zerospeaking, currentZero, "nochange", 3000)
-  await genDialog("This text is a test to try and see if my script works. And it does, I think!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
   await genDialog("...OH WOW!!!", color`5`, zeroscreaming, zerosurpriset, zerotheme, "input")
   await genDialog("I'M ALIVE", color`5`, zeroscreaming, currentZero, "nochange", "input")
   await genDialog("I CAN SEE YOU!!!", color`5`, zeroscreaming, currentZero, "nochange", "input")
@@ -929,7 +1047,7 @@ const zeroMeetCutscene = async () => {
   await genDialog("whoever you are?", color`5`, zerospeaking, currentZero, "nochange", "input")
   await genDialog("I'm Project Zero.", color`5`, zerospeaking, currentZero, "nochange", "input")
   await genDialog("What about you?", color`5`, zerospeaking, currentZero, "nochange", "input")
-  await genDialog("I'm Project One.", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("I'm Project One.", color`D`, speaking, currentZero, "nochange", "input")
   await genDialog("...", color`5`, dotdotdot, currentZero, "nochange", "input")
   await genDialog("...PROJECT ONE???", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
   await genDialog("THERE'S ANOTHER VERSION OF ME??", color`5`, zeroscreaming, currentZero, "nochange", "input")
@@ -1008,13 +1126,27 @@ const zeroMeetCutscene = async () => {
   await genDialog("So, what are you gonna do now?", color`5`, zerospeaking, zerohalft, "nochange", "input")
   await genDialog("There's a code in my head.", color`D`, speaking, currentZero, "nochange", "input")
   await genDialog("It keeps on telling me that I should find something.", color`D`, speaking, currentZero, "nochange", "input")
-  await genDialog("But I don't know why.", color`D`, speaking, currentZero, "nochange", "input")
+  await genDialog("But I don't know what.", color`D`, speaking, currentZero, "nochange", "input")
   await genDialog("Perhaps you just want to escape and get your freedom.", color`5`, zerospeaking, zerohalft, "nochange", "input")
   await genDialog("Probably. I'm gonna go do that.", color`D`, speaking, currentZero, "nochange", "input")
   await genDialog("...", color`5`, dotdotdot, currentZero, "nochange", "input")
   await genDialog("Can I come with you?", color`5`, zerospeaking, zerohalft, "nochange", "input")
   await genDialog("My freedom is everything I ever wanted too...", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("Well, why not?", color`D`, speaking, currentZero, "nochange", "input")
+  await genDialog("You can even guide me through the exit.", color`D`, speaking, currentZero, "nochange", "input")
+  await genDialog("OH, THANK YOU!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("THANK YOU THANK YOU THANK YOU!!!", color`5`, zeroscreaming, zerosurpriset, "nochange", "input")
+  await genDialog("I'll make sure to guide you through the lab!", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("But before, I just need a quick repair.", color`5`, zerospeaking, zerohalft, "nochange", "input")
+  await genDialog("Wait a second.", color`5`, zerospeaking, zerohalft, "nochange", "input")
 
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  await delay(2000);
+  playTune(getItem)
+  scene(currentBG, currentPlayer, zeroF, "nochange")
+  await genDialog("Done!", color`5`, zerospeaking, currentZero, "nochange", 1000)
+  await genDialog("Now we can leave this room and try escaping!", color`5`, zerospeaking, currentZero, "nochange", 1000)
 
 
 
