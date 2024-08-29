@@ -1218,11 +1218,26 @@ const zeroMeetCutscene = async () => {
   await new Promise((res) => nextDialog = res)
   clearText()
   hasKey = true
-  cutscene = false
   interacting = false
   zeroAwake = true
   interaction = ""
+  cutscene = false
   scene(currentBG, currentPlayer, zeroF, thelab)
+  setSolids(
+    [player,
+      wall,
+      labbench1,
+      labbench2,
+      labbench3,
+      labbench4,
+      plant,
+      plant2,
+      capsuleb,
+      noteonlabbench,
+      deadbot,
+      pushplant,
+      noteonwall
+    ])
 
 
 };
@@ -1380,48 +1395,48 @@ setPushables({
 onInput("s", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerF, currentZero, "nochange")
-    if (tilesWith(zero).length != 0 && zeroAwake != false) {
-      scene(currentBG, currentPlayer, zeroF, "nochange")
-      getFirst(zero).x = getFirst(player).x
-      getFirst(zero).y = getFirst(player).y
-    }
     getFirst(player).y += 1
+    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).y + 1 != getFirst(playerY)) {
+      scene(currentBG, currentPlayer, zeroB, "nochange")
+      getFirst(zero).y = getFirst(player).y + 1
+    }
   }
 })
 
 onInput("w", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerB, currentZero, "nochange")
-    if (tilesWith(zero).length != 0 && zeroAwake != false) {
-      scene(currentBG, currentPlayer, zeroB, "nochange")
-      getFirst(zero).x = getFirst(player).x
-      getFirst(zero).y = getFirst(player).y
-    }
     getFirst(player).y += -1
+    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).y - 1 != getFirst(playerY)) {
+      scene(currentBG, currentPlayer, zeroB, "nochange")
+      getFirst(zero).y = getFirst(player).y - 1
+
+    }
   }
 })
 
 onInput("a", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerL, currentZero, "nochange")
-    if (tilesWith(zero).length != 0 && zeroAwake != false) {
-      scene(currentBG, currentPlayer, zeroL, "nochange")
-      getFirst(zero).x = getFirst(player).x
-      getFirst(zero).y = getFirst(player).y
-    }
     getFirst(player).x += -1
+    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).x - 1 != getFirst(playerX)) {
+      scene(currentBG, currentPlayer, zeroL, "nochange")
+      getFirst(zero).x = getFirst(player).x + 1
+
+    }
   }
 })
 
 onInput("d", () => {
   if (cutscene != true && interacting != true) {
     scene(currentBG, playerR, currentZero, "nochange")
-    if (tilesWith(zero).length != 0 && zeroAwake != false) {
-      scene(currentBG, currentPlayer, zeroR, "nochange")
-      getFirst(zero).x = getFirst(player).x
-      getFirst(zero).y = getFirst(player).y
-    }
     getFirst(player).x += 1
+    if (tilesWith(zero).length != 0 && zeroAwake != false && getFirst(zero).x + 1 != getFirst(playerX)) {
+      scene(currentBG, currentPlayer, zeroR, "nochange")
+      getFirst(zero).x = getFirst(player).x - 1
+
+    }
+
   }
 })
 
