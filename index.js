@@ -1,8 +1,8 @@
 /*
 @title: Project Zero
-@author: 
-@tags: []
-@addedOn: 2024-00-00
+@author: Creeperlulu
+@tags: ['arcade', 'puzzle', 'advanced']
+@addedOn: 2024-08-30
 */
 
 // ----------INIT----------
@@ -1024,7 +1024,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 1
+const startLevel = 8
 var zeroAwake = false
 
 // ----------START---------
@@ -1036,6 +1036,7 @@ function updateCounter() {
   counter += 1
 }
 setInterval(updateCounter, 1000);
+
 
 
 // Dialogue generator
@@ -1204,7 +1205,12 @@ const alwaysSolids = [player,
   noteonlabbench,
   deadbot,
   pushplant,
-  noteonwall]
+  noteonwall,
+  flowers,
+  crops,
+  salad,
+  tulips
+]
 setSolids([...alwaysSolids, zero])
 
 
@@ -1450,7 +1456,24 @@ wwwwwwwwwwwwwlw
 ...............
 .♂♫☼►◄...♥♠♠g..
 .............p.
-.............z.`
+.............z.`,
+  map`
+wwwwwwwwwwwwwwwwwlw
+.♪♪♪♪♪.♪♪♪♪♪♪♪...♪.
+.♪...♪.♪.....♪.♪♪♪.
+.♪.♪♪♪.♪♪♪♪♪.♪.♪...
+.♪.♪.......♪.♪.♪♪♪.
+.♪.♪♪♪♪♪♪♪♪♪.♪...♪.
+.♪...........♪...♪.
+.♪♪♪.♪♪♪♪♪♪♪.♪...♪.
+...♪.♪.....♪.♪.♪♪♪.
+...♪.♪.....♪.♪.♪...
+...♪.♪.♪♪♪♪♪.♪♪♪...
+...♪.♪.♪...........
+...♪.♪.♪....♪♪♪♪♪♪.
+...♪♪♪.♪....♪....♪.
+.......♪.♪♪♪♪....p.
+.......♪♪♪.......z.`
 ]
 
 
@@ -1477,10 +1500,14 @@ setPushables({
 
 
 onInput("s", () => {
-  if (cutscene != true && interacting != true) {
+  if (!cutscene && !interacting) {
     scene(currentBG, playerF, currentZero, "nochange")
+    var lastTile = [getFirst(player).x, getFirst(player).y]
     getFirst(player).y += 1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).y + 1 != getFirst(player).y || getFirst(zero).x != getFirst(player).x)) {
+    var newTile = [getFirst(player).x, getFirst(player).y]
+    console.log("Last Tile: " + lastTile)
+    console.log("New Tile: " + newTile)
+    if (String(lastTile) != String(newTile) && tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).y + 1 != getFirst(player).y || getFirst(zero).x != getFirst(player).x)) {
       scene(currentBG, currentPlayer, zeroF, "nochange")
       getFirst(zero).x = getFirst(player).x
       getFirst(zero).y = getFirst(player).y - 1
@@ -1489,10 +1516,14 @@ onInput("s", () => {
 })
 
 onInput("w", () => {
-  if (cutscene != true && interacting != true) {
+  if (!cutscene && !interacting) {
     scene(currentBG, playerB, currentZero, "nochange")
+    var lastTile = [getFirst(player).x, getFirst(player).y]
     getFirst(player).y += -1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).y - 1 != getFirst(player).y || getFirst(zero).x != getFirst(player).x)) {
+    var newTile = [getFirst(player).x, getFirst(player).y]
+    console.log("Last Tile: " + lastTile)
+    console.log("New Tile: " + newTile)
+    if (String(lastTile) != String(newTile) && tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).y - 1 != getFirst(player).y || getFirst(zero).x != getFirst(player).x)) {
       scene(currentBG, currentPlayer, zeroB, "nochange")
       getFirst(zero).x = getFirst(player).x
       getFirst(zero).y = getFirst(player).y + 1
@@ -1502,10 +1533,14 @@ onInput("w", () => {
 })
 
 onInput("a", () => {
-  if (cutscene != true && interacting != true) {
+  if (!cutscene && !interacting) {
     scene(currentBG, playerL, currentZero, "nochange")
+    var lastTile = [getFirst(player).x, getFirst(player).y]
     getFirst(player).x += -1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).x - 1 != getFirst(player).x || getFirst(zero).y != getFirst(player).y)) {
+    var newTile = [getFirst(player).x, getFirst(player).y]
+    console.log("Last Tile: " + lastTile)
+    console.log("New Tile: " + newTile)
+    if (String(lastTile) != String(newTile) && tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).x - 1 != getFirst(player).x || getFirst(zero).y != getFirst(player).y)) {
       scene(currentBG, currentPlayer, zeroL, "nochange")
       getFirst(zero).x = getFirst(player).x + 1
       getFirst(zero).y = getFirst(player).y
@@ -1515,10 +1550,14 @@ onInput("a", () => {
 })
 
 onInput("d", () => {
-  if (cutscene != true && interacting != true) {
+  if (!cutscene && !interacting) {
     scene(currentBG, playerR, currentZero, "nochange")
+    var lastTile = [getFirst(player).x, getFirst(player).y]
     getFirst(player).x += 1
-    if (tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).x + 1 != getFirst(player).x || getFirst(zero).y != getFirst(player).y)) {
+    var newTile = [getFirst(player).x, getFirst(player).y]
+    console.log("Last Tile: " + lastTile)
+    console.log("New Tile: " + newTile)
+    if (String(lastTile) != String(newTile) && tilesWith(zero).length != 0 && zeroAwake != false && (getFirst(zero).x + 1 != getFirst(player).x || getFirst(zero).y != getFirst(player).y)) {
       scene(currentBG, currentPlayer, zeroR, "nochange")
       getFirst(zero).x = getFirst(player).x - 1
       getFirst(zero).y = getFirst(player).y
