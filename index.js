@@ -297,6 +297,78 @@ LLLL00006660LLLL
 111111111111L111
 LLLLLLLLLLLLLLLL`
 const blacktile = "♪"
+const flowers = "♫"
+const flowerst = bitmap`
+LLL7L7LLL3L3LLLL
+LHCH6C8C8C6CCCCL
+LC6C47C6C3439C9L
+LHD545848C4CC6CL
+LCDC6CC4CCCC9D9L
+L9C9D5CC3C3CCDCL
+LC6CD6C6C6C7C7CL
+L949CC6C3D3C6CCL
+LC4CC6D6CDC747CL
+LC4CCCDCCCCC4CCL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+11............11
+11............11
+11............11`
+const crops = "☼"
+const cropst = bitmap`
+LLLLL4LLLLLLLLLL
+LCC444C44C44CCCL
+LC4444C4C4444C4L
+LC444CCCC444CC4L
+LCC4CC44CC4CCCCL
+LCCCCC44CCCCC44L
+LC444C4CC44C44CL
+LCC44CC4C44C44CL
+LC44CC44C44C4CCL
+LC4CCC4CCC4CCCCL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+11............11
+11............11
+11............11`
+const salad = "►"
+const saladt = bitmap`
+LLLLLLLLLLLLLLLL
+LCCCCCCCCCCCCCCL
+LCCCCCCCDDCCDCCL
+LCDDCCCDDDCDDDCL
+LCDDDCD4DCD4DDCL
+LCC44CD4DD4DDCCL
+LCCD44D4444DCCCL
+LCCDD44DDDDDCCCL
+LCCCCDDDDDCCCCCL
+LCCCCCCCCCCCCCCL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+11............11
+11............11
+11............11`
+const tulips = "◄"
+const tulipst = bitmap`
+LLLLLLLLLLLLLLLL
+LCFCFFCC9C99CCCL
+LCFFFCCC9999CCCL
+LCC33C3CC977C7CL
+LCC33336C64777CL
+L8C433C6664C77CL
+L888C4CC6CCCDCCL
+L888C4CCDCCCDCCL
+LCDCC4CCDCCCDCCL
+LCDCCCCCCCCCDCCL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+LLLLLLLLLLLLLLLL
+11............11
+11............11
+11............11`
 
 // sounds
 const speaking = tune`
@@ -1074,6 +1146,10 @@ function scene(backgroundtexture, playertexture, zerotexture, musicState) {
     [pushplant, plant2t],
     [blacktile, black],
     [tile, tilet],
+    [flowers, flowerst],
+    [crops, cropst],
+    [salad, saladt],
+    [tulips, tulipst],
 
     //interactive
     [noteonlabbench, noteonlabbencht],
@@ -1349,14 +1425,14 @@ wwwwwwwwwwwwwlw
   map`
 wwwwwwwwwwwwwlw
 ...............
+....♂..........
+..♫☼►♫...♥g♥♠..
 ...............
 ...............
+..◄►♫☼...♠♠♥♥..
 ...............
 ...............
-...............
-...............
-...............
-...............
+.♂♫☼►◄...♥♠♠g..
 .............p.
 .............z.`
 ]
@@ -1665,6 +1741,7 @@ afterInput(() => {
     }
 
 
+
     if (wallKickTimes == 5 && wallBroken != true) {
       wallBroken = true
       getFirst(player).y += 1;
@@ -1683,6 +1760,15 @@ afterInput(() => {
     }
   }
 
+  if (level == 7) {
+    console.log("yes dude")
+    var plantOnGoal = tilesWith(pushplant, plantgoal);
+
+    if (plantOnGoal.length >= 2 && hasKey == false) {
+      playTune(getItem)
+      hasKey = true
+    }
+  }
 
   playerOnLockedDoor = tilesWith(player, lockeddoor);
 
@@ -1793,6 +1879,10 @@ afterInput(() => {
       playTune(error)
       addText("Door is locked.", { x: 2, y: 14, color: color`0` })
       getFirst(player).y += 1
+      if (tilesWith(zero).length != 0 && zeroAwake != false) {
+        getFirst(zero).y = getFirst(player).y + 1
+
+      }
     }
   }
 })
