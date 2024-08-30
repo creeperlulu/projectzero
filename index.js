@@ -988,6 +988,23 @@ const yellow = bitmap`
 6666666666666666
 6666666666666666
 6666666666666666`
+const empty = bitmap`
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................`
 var cutscene = false
 var tempX;
 var tempY;
@@ -1000,7 +1017,6 @@ var hasKey = false;
 var wallKickTimes = 0;
 var wallBroken = false
 var talkedToRobot1 = false
-var zeroAwake = false
 
 var playback = playTune(emptymusic, Infinity)
 
@@ -1008,8 +1024,8 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 5
-
+const startLevel = 1
+var zeroAwake = false
 
 // ----------START---------
 
@@ -1848,9 +1864,12 @@ afterInput(() => {
       }
       clearText();
     } else {
-      addText("Congratulations.", { x: 2, y: 7, color: color`0` })
-      addText("You are now", { x: 4, y: 8, color: color`0` })
-      addText("a free robot.", { x: 3, y: 9, color: color`0` })
+      clearText();
+      setMap(ui[0]);
+      scene(empty, currentPlayer, currentZero, emptymusic);
+      addText("It's not over yet.", { x: 1, y: 7, color: color`0` })
+      addText("This game is still", { x: 1, y: 8, color: color`0` })
+      addText("in development.", { x: 3, y: 9, color: color`0` })
     }
   }
 
@@ -1871,9 +1890,12 @@ afterInput(() => {
 
         clearText();
       } else {
-        addText("Congratulations.", { x: 2, y: 7, color: color`0` })
-        addText("You are now", { x: 4, y: 8, color: color`0` })
-        addText("a free robot.", { x: 3, y: 9, color: color`0` })
+        clearText();
+        setMap(ui[0]);
+        scene(empty, currentPlayer, currentZero, emptymusic);
+        addText("It's not over yet.", { x: 1, y: 7, color: color`0` })
+        addText("This game is still", { x: 1, y: 8, color: color`0` })
+        addText("in development.", { x: 3, y: 9, color: color`0` })
       }
     } else {
       playTune(error)
