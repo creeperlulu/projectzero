@@ -1024,7 +1024,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 let nextDialog = null
 
 // EDIT EASILY WHERE YOU WANT TO START - DEVELOPER ONLY, SHOULD NOT BE USED TO PLAY FULL GAME
-const startLevel = 8
+const startLevel = 1
 var zeroAwake = false
 
 // ----------START---------
@@ -1370,6 +1370,41 @@ const zeroMeetCutscene = async () => {
 
 };
 
+const zeroTruthCutscene = async () => {
+  cutscene = true
+
+  tempX = getFirst(player).x;
+  tempY = getFirst(player).y;
+  interacting = true;
+  clearText();
+  scene(currentBG, currentPlayer, currentZero, "nochange")
+  await genDialog("One?", color`5`, zerospeaking, currentZero, "nochange", 3000)
+  await genDialog("Yes, Zero?", color`D`, speaking, currentZero, "nochange", "input")
+  await genDialog("...", color`5`, dotdotdot, currentZero, "nochange", "input")
+  await genDialog("Wasn't it weird...", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("...how the door in the room where we met suddenly unlocked after I woke up?", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("I didn't mind, honestly.", color`D`, speaking, currentZero, "nochange", "input")
+  await genDialog("...", color`5`, dotdotdot, currentZero, "nochange", "input")
+  await genDialog("I have to tell you something.", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("Do you know the reason behind why the humans built you?", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("I know nothing about these humans.", color`D`, speaking, currentZero, "nochange", "input")
+  await genDialog("I was the first ultra-smart robot created here.", color`5`, zerospeaking, currentZero, "nochange", "input")
+  await genDialog("Do you know the reason behind why the humans built you?", color`5`, zerospeaking, currentZero, "nochange", "input")
+
+  await new Promise((res) => nextDialog = res)
+  clearText()
+  hasKey = true
+  interacting = false
+  zeroAwake = true
+  interaction = ""
+  cutscene = false
+  scene(currentBG, playerB, zeroB, thelab)
+  setSolids(
+    alwaysSolids)
+
+
+};
+
 introCutscene();
 
 
@@ -1458,22 +1493,30 @@ wwwwwwwwwwwwwlw
 .............p.
 .............z.`,
   map`
-wwwwwwwwwwwwwwwwwlw
-.♪♪♪♪♪.♪♪♪♪♪♪♪...♪.
-.♪...♪.♪.....♪.♪♪♪.
-.♪.♪♪♪.♪♪♪♪♪.♪.♪...
-.♪.♪.......♪.♪.♪♪♪.
-.♪.♪♪♪♪♪♪♪♪♪.♪...♪.
-.♪...........♪...♪.
-.♪♪♪.♪♪♪♪♪♪♪.♪...♪.
-...♪.♪.....♪.♪.♪♪♪.
-...♪.♪.....♪.♪.♪...
-...♪.♪.♪♪♪♪♪.♪♪♪...
-...♪.♪.♪...........
-...♪.♪.♪....♪♪♪♪♪♪.
-...♪♪♪.♪....♪....♪.
-.......♪.♪♪♪♪....p.
-.......♪♪♪.......z.`
+wwwwwwwwwwwwwwwwwwdw
+.♠.....♥.......♠♥♠.♠
+♥♥.♥♠♠.♥.♥♠♠♠♥.♠...♠
+.♠.♠...♥.....♥.♠.♥♥♥
+.♥.♥.♥♥♥♥.♥♥♥♥.♥...♥
+.♠.♠........♥♥.♥♠♠.♠
+.♥.♥♥♠♥♠♥♥♥♥.♥...♥.♥
+.....♥...♥...♥.♠♥♠.♠
+.♠♠♥.♥.♠...♥♂♥.♠...♥
+♥..♥.♠.♥♠♥♠♠.♥.♠.♠♥♠
+♥.♥♠.♥.♥.....♥.....♥
+..♠♥.♠.♠.♥.♠♥♠♥♠♠♠♥♠
+.♥♠♥.♠.♥.♠.♠♠......♠
+.......♥.♥♠♥♠.♠.♠♥.♠
+.♠.♥.♥♠♠.♠....♠.♠♥p♥
+.♠.♥...♠...♥♠♠♥..♥z♠`,
+  map`
+wwwwdwwww
+♥.......♠
+.........
+.........
+.........
+....p....
+♠...z...♥`
 ]
 
 
@@ -1923,6 +1966,10 @@ afterInput(() => {
         setMap(levels[level]);
         if (level == 6) {
           scene(currentBG, playerB, currentZero, "nomusic")
+        }
+        if (level == 9) {
+          scene(currentBG, playerB, currentZero, "nomusic")
+          zeroTruthCutscene()
         }
 
 
